@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="EngineSettings">
+      <UniqueIdentifier>{26f574e3-03a9-4479-afc2-1b566c48c323}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineMacros">
+      <UniqueIdentifier>{3e0b8e24-e8a6-45d3-a60a-8ed1557b6319}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SubSystems">
+      <UniqueIdentifier>{c97c1ad0-85aa-45eb-833c-32ddf69aed78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SubSystems\Headers">
+      <UniqueIdentifier>{028dbc03-0773-42b6-b1ca-80f47f85f29f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SubSystems\Source Files">
+      <UniqueIdentifier>{f87cfafb-7207-4a50-8295-8b1107624035}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SlitherEnginePCH.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameCore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowsHelpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioSubSystem.cpp">
+      <Filter>SubSystems\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EventHandlerSubSystem.cpp">
+      <Filter>SubSystems\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderingSubSystem.cpp">
+      <Filter>SubSystems\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SlitherSubSystem.cpp">
+      <Filter>SubSystems\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SubSystemManager.cpp">
+      <Filter>SubSystems\Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SlitherEnginePCH.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameCore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineDefaults.h">
+      <Filter>EngineSettings</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineMacros.h">
+      <Filter>EngineMacros</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowsHelpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InputEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectPool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioSubSystem.h">
+      <Filter>SubSystems\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="EventHandlerSubSystem.h">
+      <Filter>SubSystems\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingSubSystem.h">
+      <Filter>SubSystems\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="SlitherSubSystem.h">
+      <Filter>SubSystems\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="SubSystemManager.h">
+      <Filter>SubSystems\Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
