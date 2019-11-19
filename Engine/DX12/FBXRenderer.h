@@ -8,7 +8,7 @@ using Microsoft::WRL::ComPtr;
 using namespace DirectX;
 using namespace DirectX::PackedVector;
 
-const int gNumFrameResources = 3;
+//const int gNumFrameResources = 3;
 
 class Textures;
 class Materials;

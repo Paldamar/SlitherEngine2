@@ -1,5 +1,8 @@
 #include "DX12PCH.h"
 
+//const int gNumFrameResources = 3;
+
+const int gNumFrameResources = 3;
 
 using Microsoft::WRL::ComPtr;
 
