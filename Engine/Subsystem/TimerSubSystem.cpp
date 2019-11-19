@@ -6,6 +6,12 @@ TimerSubSystem::TimerSubSystem(std::string systemName, SubSystemID instanceID) :
 
 TimerSubSystem::~TimerSubSystem()
 {
+	for (std::pair<std::string, Timer*> timer : m_ActiveTimers)
+	{
+		SafeDelete(timer.second);
+		m_ActiveTimers.erase(timer.first);
+	}
+	m_ActiveTimers.clear();
 }
 
 void TimerSubSystem::Init()
@@ -17,7 +23,7 @@ void TimerSubSystem::UpdateLowPriotityTimers(float deltaTime)
 	for (std::pair<std::string, Timer*> timer : m_ActiveTimers)
 	{
 		if (timer.second->IsRunning() && timer.second->GetHandle().GetTimerImportance() == TimerPriority::Low)
-			timer.second->Update(deltaTime);			
+			timer.second->Update(deltaTime);
 	}
 }
 
@@ -71,6 +77,6 @@ void TimerSubSystem::CleanupInActiveTimers()
 		{
 			SafeDelete(timer.second);
 			m_ActiveTimers.erase(timer.first);
-		}			
+		}
 	}
 }

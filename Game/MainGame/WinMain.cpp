@@ -9,8 +9,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	SlitherFramework->Run(Game);
 
-	SafeDelete(Game);
+	SlitherFramework->Shutdown();
 
+	SafeDelete(Game);
 	SafeDelete(SlitherFramework);
 
 	return 0;
