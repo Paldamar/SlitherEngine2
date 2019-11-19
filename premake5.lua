@@ -173,7 +173,7 @@ project "DirectX"
 ------------------------------------------------ Subsystem Project
 project "SubSystem"
     location    "build"
-	dependson   { "DirectX", "Events", "XAudio", "World", "EngineMacros" }
+	dependson   { "DirectX", "Events", "XAudio", "World", "EngineMacros", "Timers" }
     kind        "StaticLib"
     language    "C++"
     pchheader   "SubsystemPCH.h"
@@ -191,6 +191,7 @@ project "SubSystem"
 	links {
         "Math",
 		"Events",
+		"Timers"
     }
 
     filter "configurations:Debug"
@@ -336,6 +337,29 @@ project "EngineMacros"
     files {
         "Engine/EngineMacros/**.cpp",
         "Engine/EngineMacros/**.h",
+    }
+	
+	links {
+    }
+
+    filter "configurations:Debug"
+        defines { "DEBUG" }
+        symbols "On"
+------------------------------------------------ Timers Project
+project "Timers"
+    location    "build"
+	dependson   {"EngineMacros"}
+    kind        "StaticLib"
+    language    "C++"
+    pchheader   "TimersPCH.h"
+    pchsource   "Engine/Timers/TimersPCH.cpp"
+
+    includedirs {
+    }
+
+    files {
+        "Engine/Timers/**.cpp",
+        "Engine/Timers/**.h",
     }
 	
 	links {
