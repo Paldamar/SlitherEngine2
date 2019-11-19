@@ -50,30 +50,11 @@ void Framework::Init(int width, int height, HINSTANCE hInstance)
 
 	m_WindowIsActive = true;
 
-	//WNDCLASS wc;
+	RenderingSubSystem* directXSystem = 
+		GetGameCore()->GetSubSystemManager()->CreateSubSystem<RenderingSubSystem>("DirectX", SubSystemID::DXSystem);
 
-	//wc.style = CS_HREDRAW | CS_VREDRAW;
-	//wc.lpfnWndProc = MainWindowProc;
-	//wc.cbClsExtra = 0;
-	//wc.cbWndExtra = 0;	
-	//wc.hIcon = LoadIcon(0, IDI_APPLICATION);
-	//wc.hCursor = LoadCursor(0, IDC_ARROW);
-	//wc.hbrBackground = (HBRUSH)GetStockObject(NULL_BRUSH);
-	//wc.lpszMenuName = 0;
-	//wc.lpszClassName = "MainWnd";
-
-	//RenderingSubSystem* DirextXSystem = m_GameCore->GetSubSystemManager()->CreateSubSystem<RenderingSubSystem>("DirectX", SubSystemID::DXSystem);
-	//if (DirextXSystem)
-	//{
-	//	DirextXSystem->Init();
-	//	if (DirextXSystem->GetRenderer())
-	//	{
-	//		DirextXSystem->GetRenderer()->SetAppInst(hInstance);
-	//		DirextXSystem->GetRenderer()->Initialize(wc);
-	//	}
-	//}
-
-	RenderingSubSystem* directXSystem = GetGameCore()->GetSubSystemManager()->CreateSubSystem<RenderingSubSystem>("DirectX", SubSystemID::DXSystem);
+	TimerSubSystem* timerSystem =
+		GetGameCore()->GetSubSystemManager()->CreateSubSystem<TimerSubSystem>("TimerSystem", SubSystemID::Timers);
 
 	if (directXSystem)
 	{
@@ -96,6 +77,12 @@ int Framework::Run(GameCore* pGameCore)
 	// Our game loop.
 	MSG msg;
 	bool done = false;
+
+	// Keep referances of subsystems here
+
+	TimerSubSystem* timerSystem = reinterpret_cast<TimerSubSystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByType(Timers));
+
+	// ---------------------------------
 
 	while (!done)
 	{
@@ -127,6 +114,8 @@ int Framework::Run(GameCore* pGameCore)
 				{
 					//reinterpret_cast<EventHandlerSubSystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByName("EventHandler"))->DispatchEvents(m_GameCore);
 
+					timerSystem->UpdateHighPriotityTimers(deltaTime);
+
 					m_GameCore->GetFramework()->WndProc(m_hWnd, msg.message, m_wParam, m_lParam);
 
 					//m_GameCore->GetSubSystemManager()->Update(deltaTime);
@@ -143,6 +132,9 @@ int Framework::Run(GameCore* pGameCore)
 					{
 						m_OldKeyStates[i] = m_KeyStates[i];
 					}
+
+					timerSystem->UpdateLowPriotityTimers(deltaTime);
+					timerSystem->CleanupInActiveTimers();
 				}
 			}
 		}

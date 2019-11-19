@@ -29,6 +29,24 @@ public:
 	inline TimerPriority GetTimerImportance() const { return m_Importance; }
 
 	inline void* GetOwningObject() { return m_OwningObject; }
+
+	bool operator == (const TimerHandle& o) 
+	{
+		return this->GetIsLooping() == o.GetIsLooping() &&
+			//this->GetOwningObject() == o.GetOwningObject() && // not compatible - cannot compare void pointers.
+			this->GetTargetDuration() == o.GetTargetDuration() &&
+			this->GetTimerImportance() == o.GetTimerImportance() &&
+			this->GetTimerName() == o.GetTimerName();
+	}
+
+	bool operator != (const TimerHandle& o)
+	{
+		return this->GetIsLooping() != o.GetIsLooping() ||
+			//this->GetOwningObject() != o.GetOwningObject() || // not compatible - cannot compare void pointers.
+			this->GetTargetDuration() != o.GetTargetDuration() ||
+			this->GetTimerImportance() != o.GetTimerImportance() ||
+			this->GetTimerName() != o.GetTimerName();
+	}
 protected:
 	bool m_IsLooping = false;
 	float m_TargetDuration = 0.001f;

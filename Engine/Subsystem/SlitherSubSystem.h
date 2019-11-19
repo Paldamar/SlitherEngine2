@@ -9,7 +9,8 @@ enum SubSystemID
 	DXSystem,
 	XAudio,
 	World,
-	PhysX
+	PhysX,
+	Timers,
 };
 
 class SlitherSubSystem
