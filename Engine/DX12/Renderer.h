@@ -1,13 +1,10 @@
 #pragma once
+typedef LRESULT(*MsgProc_Callback)(HWND, UINT, WPARAM, LPARAM);
 
 #if defined(DEBUG) || defined(_DEBUG)
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 #endif
-
-#include "d3dUtil.h"
-#include "GameTimer.h"
-#include "PlayerCamera.h"
 
 // Link necessary d3d12 libraries.
 #pragma comment(lib,"d3dcompiler.lib")
@@ -21,7 +18,7 @@ class Renderer
 {
 protected:
 
-    Renderer(HINSTANCE hInstance);
+    Renderer();
     Renderer(const Renderer& rhs) = delete;
     Renderer& operator=(const Renderer& rhs) = delete;
     virtual ~Renderer();
@@ -39,12 +36,12 @@ public:
 
 	int Run();
  
-    virtual bool Initialize();
+    virtual bool Initialize(MsgProc_Callback callback);
     virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	UINT RenderItemSize = 0;
 	//UINT SkinnedRenderItemSize = 0;
-
+	virtual void SetAppInst(HINSTANCE instance) { mhAppInst = instance; }
 
 	static Renderer* GetRenderer();
 
@@ -65,7 +62,7 @@ protected:
 
 protected:
 
-	bool InitMainWindow();
+	bool InitMainWindow(MsgProc_Callback callback);
 	bool InitDirect3D();
 	void CreateCommandObjects();
     void CreateSwapChain();

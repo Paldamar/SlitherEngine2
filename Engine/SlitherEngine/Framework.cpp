@@ -72,6 +72,17 @@ void Framework::Init(int width, int height, HINSTANCE hInstance)
 	//		DirextXSystem->GetRenderer()->Initialize(wc);
 	//	}
 	//}
+
+	RenderingSubSystem* directXSystem = GetGameCore()->GetSubSystemManager()->CreateSubSystem<RenderingSubSystem>("DirectX", SubSystemID::DXSystem);
+
+	if (directXSystem)
+	{
+		directXSystem->SetCallBack(Framework::WndProc);
+		directXSystem->SetAppInst(hInstance);
+		directXSystem->Init();
+	}
+
+	
 }
 
 int Framework::Run(GameCore* pGameCore)

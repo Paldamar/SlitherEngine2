@@ -28,6 +28,8 @@
 #include <comdef.h>
 #include <fstream>
 #include <WindowsX.h>
+#include <random>
+#include <chrono>
 
 #include "Camera.h"
 #include "DDSTextureLoader.h"
@@ -44,5 +46,8 @@
 #include "Renderer.h"
 #include "TextureLoader.h"
 #include "Utility.h"
+#include "FBXRenderer.h"
 
 #pragma warning (disable : 4244)
+
+typedef LRESULT(*MsgProc_Callback)(HWND, UINT, WPARAM, LPARAM);

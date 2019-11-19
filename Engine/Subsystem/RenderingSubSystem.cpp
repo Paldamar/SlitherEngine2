@@ -1,7 +1,7 @@
 #include "SubsystemPCH.h"
 
 RenderingSubSystem::RenderingSubSystem(std::string systemName, SubSystemID instanceID)
-	: SlitherSubSystem(systemName, instanceID)
+	: SlitherSubSystem(systemName, instanceID), FBXRenderer()
 {
 }
 
@@ -11,12 +11,12 @@ RenderingSubSystem::~RenderingSubSystem()
 
 void RenderingSubSystem::Init()
 {
-//	m_Renderer = new Renderer();
+	Renderer::Initialize(m_Callback);
 }
 
 void RenderingSubSystem::Update(float deltaTime)
 {
-//	m_Renderer->Update();
+//Renderer::Update()
 }
 
 void RenderingSubSystem::Draw()

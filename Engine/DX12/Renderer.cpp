@@ -15,14 +15,15 @@ MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     return Renderer::GetApp()->MsgProc(hwnd, msg, wParam, lParam);
 }
 
+
+
 Renderer* Renderer::mApp = nullptr;
 Renderer* Renderer::GetApp()
 {
     return mApp;
 }
 
-Renderer::Renderer(HINSTANCE hInstance)
-:	mhAppInst(hInstance)
+Renderer::Renderer()
 {
     // Only one D3DApp can be constructed.
     assert(mApp == nullptr);
@@ -111,9 +112,9 @@ int Renderer::Run()
 	return (int)msg.wParam;
 }
 
-bool Renderer::Initialize()
+bool Renderer::Initialize(MsgProc_Callback callback)
 {
-	if(!InitMainWindow())
+	if(!InitMainWindow(callback))
 		return false;
 
 	if(!InitDirect3D())
@@ -385,11 +386,11 @@ Renderer* Renderer::GetRenderer()
 }
 
 // InitMainWindow
-bool Renderer::InitMainWindow()
+bool Renderer::InitMainWindow(MsgProc_Callback callback)
 {
 	WNDCLASS wc;
 	wc.style         = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc   = MainWndProc; 
+	wc.lpfnWndProc   = callback; 
 	wc.cbClsExtra    = 0;
 	wc.cbWndExtra    = 0;
 	wc.hInstance     = mhAppInst;
