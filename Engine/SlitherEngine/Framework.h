@@ -25,6 +25,8 @@ public:
 	GameCore* GetGameCore() { return m_GameCore; }
 
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+	static Framework* SlitherFramework;
 	
 protected:
 	GameCore* m_GameCore = nullptr;
@@ -55,6 +57,4 @@ protected:
 
 	bool HandlerRoutine(DWORD dwCtrlType);
 };
-
-static Framework* SlitherFramework;
 

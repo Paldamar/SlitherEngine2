@@ -5,7 +5,7 @@ MainWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	// Forward hwnd on because we can get messages (e.g., WM_CREATE)
 	// before CreateWindow returns, and thus before mhMainWnd is valid.
-	return SlitherFramework->WndProc(hwnd, msg, wParam, lParam);
+	return Framework::SlitherFramework->WndProc(hwnd, msg, wParam, lParam);
 }
 
 Framework::Framework()
@@ -220,11 +220,9 @@ LRESULT Framework::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		case WM_NCCREATE:
 			{
 				// Set the user data for this hWnd to the Framework* we passed in, used on first line of this method above.
-				CREATESTRUCT* pcs = reinterpret_cast<CREATESTRUCT*>(lParam);
-				Framework* pFramework = static_cast<Framework*>(pcs->lpCreateParams);
-				SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG>(pFramework));
+				SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG>(SlitherFramework));
 
-				pFramework->m_hWnd = hWnd;
+				SlitherFramework->m_hWnd = hWnd;
 			}
 			return 1;
 		case WM_SIZE:
@@ -361,3 +359,5 @@ bool Framework::HandlerRoutine(DWORD dwCtrlType)
 
 	return true;
 }
+
+Framework* Framework::SlitherFramework;

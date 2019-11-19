@@ -33,7 +33,16 @@ project "MainGame"
     pchsource   "Game/MainGame/GamePCH.cpp"
 
     includedirs {
-		"Libraries/FBX_SDK/include"
+		"Libraries/FBX_SDK/include",
+		"Engine/SlitherEngine",
+		"Engine/Math",
+		"Engine/SubSystem",
+		"Engine/World",
+		"Engine/DirectX",
+		"Engine/ECS",
+		"Engine/XAudio",
+		"PhsyX",
+		"EngineMacros",
     }
 
     files {
@@ -85,7 +94,15 @@ project "SlitherEngine"
     pchsource   "Engine/SlitherEngine/SlitherEnginePCH.cpp"
 
     includedirs {
-		"Libraries/FBX_SDK/include"
+		"Libraries/FBX_SDK/include",
+		"Engine/Math",
+		"Engine/SubSystem",
+		"Engine/World",
+		"Engine/DirectX",
+		"Engine/ECS",
+		"Engine/XAudio",
+		"PhsyX",
+		"EngineMacros",
     }
 
     files {
@@ -127,13 +144,14 @@ project "SlitherEngine"
 ------------------------------------------------ Math Project
 project "Math"
     location    "build"
-	dependson   { "Math", "EngineMacros" }
+	dependson   { "EngineMacros" }
     kind        "StaticLib"
     language    "C++"
     pchheader   "MathPCH.h"
     pchsource   "Engine/Math/MathPCH.cpp"
 
     includedirs {
+		"EngineMacros"
     }
 
     files {
@@ -154,7 +172,9 @@ project "DirectX"
     pchsource   "Engine/DX12/DX12PCH.cpp"
 
     includedirs {
-		"Libraries/FBX_SDK/include"
+		"Libraries/FBX_SDK/include",
+		"Math",
+		"EngineMacros"
     }
 
     files {
@@ -180,7 +200,13 @@ project "SubSystem"
     pchsource   "Engine/Subsystem/SubsystemPCH.cpp"
 
     includedirs {
-		"Libraries/FBX_SDK/include"
+		"Libraries/FBX_SDK/include",
+		"DirectX",
+		"Events",
+		"XAudio",
+		"World",
+		"EngineMacros",
+		"Timers"
     }
 
     files {
@@ -207,6 +233,7 @@ project "ECS"
     pchsource   "Engine/ECS/ECSPCH.cpp"
 
     includedirs {
+		"EngineMacros"
     }
 
     files {
@@ -216,6 +243,7 @@ project "ECS"
 	
 	links {
         "Math",
+		"EngineMacros"
     }
 
     filter "configurations:Debug"
@@ -231,6 +259,7 @@ project "XAudio"
     pchsource   "Engine/XAudio/XAudioPCH.cpp"
 
     includedirs {
+		"EngineMacros"
     }
 
     files {
@@ -249,14 +278,17 @@ project "XAudio"
 ------------------------------------------------ World Project
 project "World"
     location    "build"
-	dependson   {"EngineMacros"}
+	dependson   {"EngineMacros", "Math", "XAudio"}
     kind        "StaticLib"
     language    "C++"
     pchheader   "WorldPCH.h"
     pchsource   "Engine/World/WorldPCH.cpp"
 
     includedirs {
-		"Libraries/FBX_SDK/include"
+		"Libraries/FBX_SDK/include",
+		"Engine/Math",
+		"Engine/XAudio",
+		"Engine/EngineMacros"
     }
 
     files {
@@ -276,13 +308,15 @@ project "World"
 ------------------------------------------------ PhsyX Project
 project "PhsyX"
     location    "build"
-	dependson   {"EngineMacros"}
+	dependson   {"EngineMacros", "Math"}
     kind        "StaticLib"
     language    "C++"
     pchheader   "PhsyXPCH.h"
     pchsource   "Engine/PhsyX/PhsyXPCH.cpp"
 
     includedirs {
+		"Engine/EngineMacros",
+		"Engine/Math"
     }
 
     files {
@@ -309,6 +343,7 @@ project "Events"
     pchsource   "Engine/Events/EventsPCH.cpp"
 
     includedirs {
+		"Engine/EngineMacros"
     }
 
     files {
@@ -355,6 +390,7 @@ project "Timers"
     pchsource   "Engine/Timers/TimersPCH.cpp"
 
     includedirs {
+		"Engine/EngineMacros"
     }
 
     files {

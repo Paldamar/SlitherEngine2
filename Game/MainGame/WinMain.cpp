@@ -3,16 +3,16 @@
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	SlitherFramework = new Framework();
-	GameCore* Game = new GameCore(SlitherFramework);
-	SlitherFramework->Init(0, 0, hInstance);
+	Framework::SlitherFramework = new Framework();
+	GameCore* Game = new GameCore(Framework::SlitherFramework);
+	Framework::SlitherFramework->Init(0, 0, hInstance);
 
-	SlitherFramework->Run(Game);
+	Framework::SlitherFramework->Run(Game);
 
-	SlitherFramework->Shutdown();
+	Framework::SlitherFramework->Shutdown();
 
 	SafeDelete(Game);
-	SafeDelete(SlitherFramework);
+	SafeDelete(Framework::SlitherFramework);
 
 	return 0;
 }
