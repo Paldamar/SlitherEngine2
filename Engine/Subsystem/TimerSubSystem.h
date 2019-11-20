@@ -19,7 +19,7 @@ public:
 	Timer* GetTimerByName(std::string name);
 	Timer* GetTimerByHandle(TimerHandle* handle);
 
-	TimerFunc CleanupInActiveTimers();
+	void CleanupInActiveTimers();
 protected:
 	std::map<std::string, Timer*> m_ActiveTimers;
 #if !DESTROY_INACTIVE_TIMERS

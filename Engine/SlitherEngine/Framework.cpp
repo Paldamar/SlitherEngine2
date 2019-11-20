@@ -93,11 +93,11 @@ int Framework::Run(GameCore* pGameCore)
 	// ---------------------------------
 
 	if (CALL_OBJECT_CLEANUP_BY_TIMER)
-	{
+	{/*
 		TimerHandle* objCleanupTimer = new TimerHandle(10.0f, TimerPriority::Low,
-			"Object Cleaner", true, worldSystem, WorldsSubSystem::CleanupWorlds);
+			"Object Cleaner", true, worldSystem, &WorldsSubSystem::CleanupWorlds);
 
-		timerSystem->MakeNewTimer(objCleanupTimer,true);
+		timerSystem->MakeNewTimer(objCleanupTimer,true);*/
 
 	}
 

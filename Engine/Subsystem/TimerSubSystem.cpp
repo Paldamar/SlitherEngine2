@@ -66,7 +66,7 @@ Timer* TimerSubSystem::GetTimerByHandle(TimerHandle* handle)
 	return nullptr;
 }
 
-TimerFunc TimerSubSystem::CleanupInActiveTimers()
+void TimerSubSystem::CleanupInActiveTimers()
 {
 #if DESTROY_INACTIVE_TIMERS
 	for (std::pair<std::string, Timer*> timer : m_ActiveTimers)

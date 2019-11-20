@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-typedef void (*TimerFunc)();
+typedef void* (*TimerFunc)();
 
 enum TimerPriority
 {
