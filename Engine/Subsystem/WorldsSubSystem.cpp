@@ -19,18 +19,12 @@ WorldsSubSystem::~WorldsSubSystem()
 
 void WorldsSubSystem::Update(float deltaTime)
 {
-	for (auto world : m_Worlds)
-	{
-		world.second->Update(deltaTime);
-	}
+	m_ActiveWorld->Update(deltaTime);
 }
 
 void WorldsSubSystem::Draw()
 {
-	for (auto world : m_Worlds)
-	{
-		world.second->Draw();
-	}
+	m_ActiveWorld->Draw();
 }
 
 void WorldsSubSystem::CleanupWorlds()
@@ -41,7 +35,33 @@ void WorldsSubSystem::CleanupWorlds()
 	}
 }
 
-SlitherWorld* WorldsSubSystem::CreateWorld(std::string worldName)
+SlitherWorld* WorldsSubSystem::GetWorld(std::string worldName)
 {
-	return m_Worlds[worldName] = new SlitherWorld();
+	auto it = m_Worlds.find(worldName);
+	if (it == m_Worlds.end())
+		return nullptr;
+
+	return it->second;
+}
+
+SlitherWorld* WorldsSubSystem::ChangeActiveWorld(std::string worldName)
+{
+	auto it = m_Worlds.find(worldName);
+	if (it == m_Worlds.end())
+		return nullptr;
+
+	m_ActiveWorld = it->second;
+	return it->second;
+}
+
+SlitherWorld* WorldsSubSystem::ChangeActiveWorld(SlitherWorld* world)
+{
+	auto it = m_Worlds.find(world->GetMapName());
+	if (it == m_Worlds.end())
+	{
+		m_Worlds[world->GetMapName()] = world;
+	}
+
+	m_ActiveWorld = world;
+	return it->second;
 }

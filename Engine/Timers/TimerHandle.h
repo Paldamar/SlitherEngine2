@@ -13,7 +13,8 @@ class TimerHandle
 {
 public:
 	TimerHandle() {};
-	TimerHandle(float tagetDuration, TimerPriority importance, std::string timerName = "", bool isLooping = false, void* owningObject = nullptr, TimerFunc returningFunc = nullptr)
+	TimerHandle(float tagetDuration, TimerPriority importance, std::string timerName = "", 
+		bool isLooping = false, void* owningObject = nullptr, TimerFunc returningFunc = nullptr)
 	{
 		m_TargetDuration = tagetDuration;
 		m_Importance = importance;

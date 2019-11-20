@@ -18,6 +18,7 @@ public:
 	virtual void Draw();
 
 	bool IsAffectedByPhysics() { return true; }
+	void SetAffectedByPhysics(bool toggle) { m_AffectedByPhysics = toggle; }
 
 	virtual void CleanupKilledObjects();
 protected:
@@ -29,6 +30,6 @@ protected:
 	std::map<std::string, BaseObject*> m_KilledOjbects;
 #endif
 	std::string m_SceneName;	
-	bool m_AffectedByPhysics;
+	bool m_AffectedByPhysics = false;
 };
 

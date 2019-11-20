@@ -1,6 +1,6 @@
 #include "TimersPCH.h"
 
-Timer::Timer(TimerHandle handle, float startingTime, bool startNow)
+Timer::Timer(TimerHandle* handle, float startingTime, bool startNow)
 {
 	m_TimerHandle = handle;
 	m_CurrentDuration = startingTime;
@@ -11,6 +11,7 @@ Timer::Timer(TimerHandle handle, float startingTime, bool startNow)
 
 Timer::~Timer()
 {
+	SafeDelete(m_TimerHandle);
 }
 
 void Timer::Start()
@@ -36,14 +37,14 @@ void Timer::Update(float deltaTime)
 {
 	m_CurrentDuration += deltaTime;
 
-	if (m_CurrentDuration >= m_TimerHandle.GetTargetDuration())
+	if (m_CurrentDuration >= m_TimerHandle->GetTargetDuration())
 	{
-		m_CurrentDuration = m_TimerHandle.GetTargetDuration();
+		m_CurrentDuration = m_TimerHandle->GetTargetDuration();
 		m_IsFinished = true;
 
-		m_TimerHandle.m_EndFunction();
+		m_TimerHandle->m_EndFunction();
 
-		if (m_TimerHandle.GetIsLooping())
+		if (m_TimerHandle->GetIsLooping())
 		{
 			Reset(true);
 		}

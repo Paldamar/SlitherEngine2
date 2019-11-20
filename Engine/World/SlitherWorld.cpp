@@ -1,6 +1,7 @@
 #include "WorldPCH.h"
 
-SlitherWorld::SlitherWorld()
+SlitherWorld::SlitherWorld(std::string worldName)
+	:m_MapName(worldName)
 {
 	m_SceneMap.insert(std::pair<std::string, BaseScene*>("Main Scene", new BaseScene("Main Scene")));
 }

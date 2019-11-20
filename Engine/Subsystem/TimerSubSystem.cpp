@@ -19,7 +19,7 @@ void TimerSubSystem::UpdateLowPriotityTimers(float deltaTime)
 {
 	for (std::pair<std::string, Timer*> timer : m_ActiveTimers)
 	{
-		if (timer.second->IsRunning() && timer.second->GetHandle().GetTimerImportance() == TimerPriority::Low)
+		if (timer.second->IsRunning() && timer.second->GetHandle()->GetTimerImportance() == TimerPriority::Low)
 			timer.second->Update(deltaTime);
 	}
 }
@@ -28,12 +28,12 @@ void TimerSubSystem::UpdateHighPriotityTimers(float deltaTime)
 {
 	for (std::pair<std::string, Timer*> timer : m_ActiveTimers)
 	{
-		if (timer.second->IsRunning() && timer.second->GetHandle().GetTimerImportance() == TimerPriority::High)
+		if (timer.second->IsRunning() && timer.second->GetHandle()->GetTimerImportance() == TimerPriority::High)
 			timer.second->Update(deltaTime);
 	}
 }
 
-bool TimerSubSystem::MakeNewTimer(TimerHandle handle, float startTime, bool startNow)
+bool TimerSubSystem::MakeNewTimer(TimerHandle* handle, float startTime, bool startNow)
 {
 	for (std::pair<std::string, Timer*> timer : m_ActiveTimers)
 	{
@@ -41,7 +41,7 @@ bool TimerSubSystem::MakeNewTimer(TimerHandle handle, float startTime, bool star
 			return false;
 	}
 
-	m_ActiveTimers[handle.GetTimerName()] = new Timer(handle, startTime, startNow);
+	m_ActiveTimers[handle->GetTimerName()] = new Timer(handle, startTime, startNow);
 
 	return true;
 }
@@ -55,7 +55,7 @@ Timer* TimerSubSystem::GetTimerByName(std::string name)
 	return it->second;
 }
 
-Timer* TimerSubSystem::GetTimerByHandle(TimerHandle handle)
+Timer* TimerSubSystem::GetTimerByHandle(TimerHandle* handle)
 {
 	for (std::pair<std::string, Timer*> timer : m_ActiveTimers)
 	{
@@ -66,7 +66,7 @@ Timer* TimerSubSystem::GetTimerByHandle(TimerHandle handle)
 	return nullptr;
 }
 
-void TimerSubSystem::CleanupInActiveTimers()
+TimerFunc TimerSubSystem::CleanupInActiveTimers()
 {
 #if DESTROY_INACTIVE_TIMERS
 	for (std::pair<std::string, Timer*> timer : m_ActiveTimers)
@@ -88,5 +88,5 @@ void TimerSubSystem::CleanupInActiveTimers()
 		}
 	}
 #endif
-	
+	return;
 }

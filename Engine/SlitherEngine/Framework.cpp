@@ -88,11 +88,17 @@ int Framework::Run(GameCore* pGameCore)
 		reinterpret_cast<TimerSubSystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByType(Timers));
 	EventHandlerSubSystem* eventHandler = 
 		reinterpret_cast<EventHandlerSubSystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByType(EventSystem));
+	WorldsSubSystem* worldSystem =
+		reinterpret_cast<WorldsSubSystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByType(SubSystemID::World));
 	// ---------------------------------
 
 	if (CALL_OBJECT_CLEANUP_BY_TIMER)
 	{
-		
+		TimerHandle* objCleanupTimer = new TimerHandle(10.0f, TimerPriority::Low,
+			"Object Cleaner", true, worldSystem, WorldsSubSystem::CleanupWorlds);
+
+		timerSystem->MakeNewTimer(objCleanupTimer,true);
+
 	}
 
 	OutputMessage("Framework : Starting Gameloop \n");
@@ -151,6 +157,9 @@ int Framework::Run(GameCore* pGameCore)
 					timerSystem->UpdateLowPriotityTimers(deltaTime);
 					OutputMessage("TimerSubSystem : Cleanup inactive Timers \n");
 					timerSystem->CleanupInActiveTimers();
+
+					if (!CALL_OBJECT_CLEANUP_BY_TIMER)
+						worldSystem->CleanupWorlds();
 				}
 			}
 		}

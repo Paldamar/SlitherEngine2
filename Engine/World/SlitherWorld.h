@@ -6,12 +6,13 @@ class BaseScene;
 class SlitherWorld
 {
 public:
-	SlitherWorld();
+	SlitherWorld(std::string worldName);
 	~SlitherWorld();
 
 	BaseScene* GetScene(std::string sceneName);
 	bool DoesSceneExist(std::string sceneName);
 
+#pragma region SpawnObject
 	template<class Object>
 	Object* SpawnObject(std::string ObjectName)
 	{
@@ -81,13 +82,36 @@ public:
 
 		return spawnedObject;
 	}
+#pragma endregion SpawnObject
+
+#pragma region MakeScene
+	template<class sceneClass>
+	sceneClass* MakeScene(std::string sceneName)
+	{
+		if (DoesSceneExist(sceneName))
+			return NULL;
+
+		m_SceneMap[sceneName] = new sceneClass(sceneName);
+	}
+
+	template<class sceneClass>
+	sceneClass* MakeScene(std::string sceneName, bool affectedByPhysics)
+	{
+		sceneClass* scene = MakeScene(sceneName)
+		if();
+		{
+			scene->SetAffectedByPhysics(affectedByPhysics);
+		}
+	}
+#pragma endregion MakeScene
 
 	void Update(float deltaTime);
 	void Draw();
 
 	void CleanupWorld();
-
+	inline std::string GetMapName() { return m_MapName; }
 protected:
 	std::map<std::string, BaseScene*> m_SceneMap;
+	std::string m_MapName;
 };
 

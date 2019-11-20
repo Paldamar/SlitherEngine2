@@ -14,12 +14,12 @@ public:
 	virtual void UpdateHighPriotityTimers(float deltaTime);
 
 	// Returns true is successful
-	virtual bool MakeNewTimer(TimerHandle handle, float startTime = 0.0f, bool startNow = false);
+	virtual bool MakeNewTimer(TimerHandle* handle, float startTime = 0.0f, bool startNow = false);
 
 	Timer* GetTimerByName(std::string name);
-	Timer* GetTimerByHandle(TimerHandle handle);
+	Timer* GetTimerByHandle(TimerHandle* handle);
 
-	void CleanupInActiveTimers();
+	TimerFunc CleanupInActiveTimers();
 protected:
 	std::map<std::string, Timer*> m_ActiveTimers;
 #if !DESTROY_INACTIVE_TIMERS

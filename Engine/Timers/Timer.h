@@ -5,10 +5,10 @@ class TimerHandle;
 class Timer
 {
 public:
-	Timer(TimerHandle handle, float startingTime = 0.0f, bool startNow = false);
+	Timer(TimerHandle* handle, float startingTime = 0.0f, bool startNow = false);
 	~Timer();
 
-	TimerHandle GetHandle() const { return m_TimerHandle; }
+	TimerHandle* GetHandle() const { return m_TimerHandle; }
 
 	void Start();
 	void Pause();
@@ -23,5 +23,5 @@ protected:
 	bool m_IsRunning = false;
 	float m_CurrentDuration = 0.0f;
 private:
-	TimerHandle m_TimerHandle;
+	TimerHandle* m_TimerHandle;
 };
