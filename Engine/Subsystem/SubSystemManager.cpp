@@ -1,7 +1,9 @@
 #include "SubsystemPCH.h"
 
-SubSystemManager::SubSystemManager()
-	//: m_EngineInstance(engineInstance)
+#include "../SlitherEngine/Framework.h"
+
+SubSystemManager::SubSystemManager(Framework* engineInstance)
+	: m_EngineInstance(engineInstance)
 {
 }
 

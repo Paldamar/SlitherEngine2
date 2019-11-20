@@ -1,7 +1,9 @@
 #include "SubsystemPCH.h"
 
-EventHandlerSubSystem::EventHandlerSubSystem(std::string systemName, SubSystemID instanceID)
-	: SlitherSubSystem(systemName, instanceID)
+#include "../SlitherEngine/Framework.h"
+
+EventHandlerSubSystem::EventHandlerSubSystem(std::string systemName, Framework* engineInstance,SubSystemID instanceID)
+	: SlitherSubSystem(systemName, engineInstance, instanceID)
 {
 }
 

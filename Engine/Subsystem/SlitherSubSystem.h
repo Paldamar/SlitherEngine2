@@ -1,6 +1,6 @@
 #pragma once
 
-//class GameCore;
+class Framework;
 
 enum SubSystemID
 {
@@ -16,7 +16,7 @@ enum SubSystemID
 class SlitherSubSystem
 {
 public:
-	SlitherSubSystem(std::string systemName, SubSystemID instanceID = NULLSystem);
+	SlitherSubSystem(std::string systemName, Framework* engineInstance,SubSystemID instanceID = NULLSystem);
 	virtual ~SlitherSubSystem();
 
 	virtual void Init() {};
@@ -31,5 +31,6 @@ public:
 private:
 	SubSystemID m_InstanceID;
 	std::string m_SystemName;
+	Framework* m_EngineInstance;
 };
 

@@ -58,6 +58,9 @@ void Framework::Init(int width, int height, HINSTANCE hInstance)
 	TimerSubSystem* timerSystem =
 		GetGameCore()->GetSubSystemManager()->CreateSubSystem<TimerSubSystem>("TimerSystem", SubSystemID::Timers);	
 
+	WorldsSubSystem* worldSystem =
+		GetGameCore()->GetSubSystemManager()->CreateSubSystem<WorldsSubSystem>("WorldSystem", SubSystemID::World);
+
 	if (directXSystem)
 	{
 		directXSystem->SetCallBack(Framework::WndProc);
@@ -81,9 +84,16 @@ int Framework::Run(GameCore* pGameCore)
 	bool done = false;
 
 	// Keep referances of subsystems here
-	TimerSubSystem* timerSystem = reinterpret_cast<TimerSubSystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByType(Timers));
-	EventHandlerSubSystem* eventHandler = reinterpret_cast<EventHandlerSubSystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByType(EventSystem));
+	TimerSubSystem* timerSystem = 
+		reinterpret_cast<TimerSubSystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByType(Timers));
+	EventHandlerSubSystem* eventHandler = 
+		reinterpret_cast<EventHandlerSubSystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByType(EventSystem));
 	// ---------------------------------
+
+	if (CALL_OBJECT_CLEANUP_BY_TIMER)
+	{
+		
+	}
 
 	OutputMessage("Framework : Starting Gameloop \n");
 	while (!done)

@@ -7,7 +7,7 @@ class GameCore;
 class EventHandlerSubSystem : public SlitherSubSystem
 {
 public:
-	EventHandlerSubSystem(std::string systemName, SubSystemID instanceID = NULLSystem);
+	EventHandlerSubSystem(std::string systemName, Framework* engineInstance,SubSystemID instanceID = NULLSystem);
 	~EventHandlerSubSystem();
 
 	void QueueEvent(Event* event);

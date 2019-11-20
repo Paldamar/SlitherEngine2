@@ -1,6 +1,7 @@
 #include "SubsystemPCH.h"
 
-TimerSubSystem::TimerSubSystem(std::string systemName, SubSystemID instanceID) : SlitherSubSystem(systemName, instanceID)
+TimerSubSystem::TimerSubSystem(std::string systemName, Framework* engineInstance, SubSystemID instanceID)
+	: SlitherSubSystem(systemName, engineInstance, instanceID)
 {
 }
 
@@ -12,10 +13,6 @@ TimerSubSystem::~TimerSubSystem()
 		m_ActiveTimers.erase(timer.first);
 	}
 	m_ActiveTimers.clear();
-}
-
-void TimerSubSystem::Init()
-{
 }
 
 void TimerSubSystem::UpdateLowPriotityTimers(float deltaTime)
@@ -71,6 +68,7 @@ Timer* TimerSubSystem::GetTimerByHandle(TimerHandle handle)
 
 void TimerSubSystem::CleanupInActiveTimers()
 {
+#if DESTROY_INACTIVE_TIMERS
 	for (std::pair<std::string, Timer*> timer : m_ActiveTimers)
 	{
 		if (timer.second->IsFinished())
@@ -79,4 +77,16 @@ void TimerSubSystem::CleanupInActiveTimers()
 			m_ActiveTimers.erase(timer.first);
 		}
 	}
+#else
+	for (std::pair<std::string, Timer*> timer : m_ActiveTimers)
+	{
+		if (timer.second->IsFinished())
+		{
+			m_InactiveTimers[timer.first] = timer.second;
+
+			m_ActiveTimers.erase(timer.first);
+		}
+	}
+#endif
+	
 }

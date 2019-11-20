@@ -1,8 +1,11 @@
 #include "SubsystemPCH.h"
 
-SlitherSubSystem::SlitherSubSystem(std::string systemName, SubSystemID instanceID)
+#include "../SlitherEngine/Framework.h"
+
+SlitherSubSystem::SlitherSubSystem(std::string systemName, Framework* engineInstance, SubSystemID instanceID)
 	: m_InstanceID(instanceID),
-	  m_SystemName(systemName)
+	  m_SystemName(systemName),
+	  m_EngineInstance(engineInstance)
 {
 }
 
