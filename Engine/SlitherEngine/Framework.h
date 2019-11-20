@@ -25,11 +25,13 @@ public:
 	GameCore* GetGameCore() { return m_GameCore; }
 
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+	static Framework* SlitherFramework;
 	
 protected:
 	GameCore* m_GameCore = nullptr;
 
-	bool m_UseEscapeToQuit = true;
+	bool m_UseEscapeToQuit;
 	bool m_CloseProgramRequested;
 
 	int m_InitialWindowWidth;
@@ -54,7 +56,7 @@ protected:
 	friend GameCore;
 
 	bool HandlerRoutine(DWORD dwCtrlType);
-};
 
-static Framework* SlitherFramework;
+	GameTimer m_GameTimer;
+};
 

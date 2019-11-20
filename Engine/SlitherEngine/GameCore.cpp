@@ -2,7 +2,7 @@
 
 GameCore::GameCore(Framework* frameWork) : m_Framework(frameWork)
 {
-	m_SubSystemManager = new SubSystemManager(/*this*/);
+	m_SubSystemManager = new SubSystemManager(frameWork);
 
 	m_SubSystemManager->CreateSubSystem<EventHandlerSubSystem>("EventHandler", SubSystemID::EventSystem);
 
@@ -27,7 +27,7 @@ SubSystemManager* GameCore::GetSubSystemManager()
 {
 	if (m_SubSystemManager == nullptr)
 	{
-		m_SubSystemManager = new SubSystemManager(/*this*/);
+		m_SubSystemManager = new SubSystemManager(m_Framework);
 		return m_SubSystemManager;
 	}
 

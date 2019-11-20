@@ -1,6 +1,8 @@
 #pragma once
 
 class SubSystemManager;
+class Event;
+class Framework;
 
 class GameCore
 {

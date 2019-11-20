@@ -1,7 +1,9 @@
 #include "SubsystemPCH.h"
 
-AudioSubSystem::AudioSubSystem(std::string systemName, SubSystemID instanceID)
-	: SlitherSubSystem(systemName, instanceID)
+#include "../SlitherEngine/Framework.h"
+
+AudioSubSystem::AudioSubSystem(std::string systemName, Framework* engineInstance, SubSystemID instanceID)
+	: SlitherSubSystem(systemName, engineInstance, instanceID)
 {
 }
 

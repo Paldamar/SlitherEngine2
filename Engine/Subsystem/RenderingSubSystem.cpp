@@ -1,7 +1,7 @@
 #include "SubsystemPCH.h"
 
-RenderingSubSystem::RenderingSubSystem(std::string systemName, SubSystemID instanceID)
-	: SlitherSubSystem(systemName, instanceID), FBXRenderer()
+RenderingSubSystem::RenderingSubSystem(std::string systemName, Framework* engineInstance, SubSystemID instanceID)
+	: SlitherSubSystem(systemName, engineInstance,instanceID), FBXRenderer()
 {
 }
 

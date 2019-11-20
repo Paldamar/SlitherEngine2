@@ -1,5 +1,7 @@
 #include "WorldPCH.h"
 
+#include "../ECS/BaseGameObject.h"
+
 BaseScene::BaseScene(std::string sceneName)
 {
 }
@@ -72,6 +74,29 @@ void BaseScene::Draw()
 
 		GameObject.second->Draw();
 	}
+}
+
+void BaseScene::CleanupKilledObjects()
+{
+#if DESTROY_GAMEOBJECTS_DURING_RUNTIME
+	for (std::pair<std::string, GameObject*> object : m_SceneObjects)
+	{
+		if (object.second->IsActive() == false)
+		{
+			SafeDelete(object.second);
+			m_SceneObjects.erase(object.first);
+		}
+	}
+#else
+	for (std::pair<std::string, BaseObject*> object : m_SceneObjects)
+	{
+		if (object.second->IsActive() == false)
+		{
+			m_KilledOjbects[object.first] = object.second;
+			m_SceneObjects.erase(object.first);
+		}
+	}
+#endif
 }
 
 void BaseScene::Startup()

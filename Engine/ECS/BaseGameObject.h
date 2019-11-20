@@ -20,8 +20,6 @@ protected:
 	virtual void Startup();	
 protected:
 	std::vector<std::string> m_Tags;
-	
-
 };
 
 
