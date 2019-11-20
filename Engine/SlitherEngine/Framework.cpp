@@ -42,6 +42,8 @@ Framework::Framework()
 
 void Framework::Init(int width, int height, HINSTANCE hInstance)
 {
+	OutputMessage("Framework : Init \n");
+
 	m_InitialWindowWidth = width;
 	m_InitialWindowHeight = height;
 
@@ -54,7 +56,7 @@ void Framework::Init(int width, int height, HINSTANCE hInstance)
 		GetGameCore()->GetSubSystemManager()->CreateSubSystem<RenderingSubSystem>("DirectX", SubSystemID::DXSystem);
 
 	TimerSubSystem* timerSystem =
-		GetGameCore()->GetSubSystemManager()->CreateSubSystem<TimerSubSystem>("TimerSystem", SubSystemID::Timers);
+		GetGameCore()->GetSubSystemManager()->CreateSubSystem<TimerSubSystem>("TimerSystem", SubSystemID::Timers);	
 
 	if (directXSystem)
 	{
@@ -79,11 +81,11 @@ int Framework::Run(GameCore* pGameCore)
 	bool done = false;
 
 	// Keep referances of subsystems here
-
 	TimerSubSystem* timerSystem = reinterpret_cast<TimerSubSystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByType(Timers));
-
+	EventHandlerSubSystem* eventHandler = reinterpret_cast<EventHandlerSubSystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByType(EventSystem));
 	// ---------------------------------
 
+	OutputMessage("Framework : Starting Gameloop \n");
 	while (!done)
 	{
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -112,8 +114,9 @@ int Framework::Run(GameCore* pGameCore)
 				}
 				else
 				{
-					//reinterpret_cast<EventHandlerSubSystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByName("EventHandler"))->DispatchEvents(m_GameCore);
+					eventHandler->DispatchEvents(m_GameCore);
 
+					OutputMessage("TimerSubSystem : Updating High Priority Timers \n");
 					timerSystem->UpdateHighPriotityTimers(deltaTime);
 
 					m_GameCore->GetFramework()->WndProc(m_hWnd, msg.message, m_wParam, m_lParam);
@@ -133,7 +136,9 @@ int Framework::Run(GameCore* pGameCore)
 						m_OldKeyStates[i] = m_KeyStates[i];
 					}
 
+					OutputMessage("TimerSubSystem : Updating Low Priority Timers \n");
 					timerSystem->UpdateLowPriotityTimers(deltaTime);
+					OutputMessage("TimerSubSystem : Cleanup inactive Timers \n");
 					timerSystem->CleanupInActiveTimers();
 				}
 			}
@@ -146,6 +151,7 @@ int Framework::Run(GameCore* pGameCore)
 void Framework::Shutdown()
 {
 	// TODO call our DX12 subsystem to close window
+	OutputMessage("Framework : Shutting down. \n");
 }
 
 void Framework::SetWindowSize(int width, int height)
@@ -162,6 +168,8 @@ void Framework::ResizeWindow(int width, int height)
 
 	if (m_GameCore)
 		m_GameCore->OnSurfaceChanged(width, height);
+
+	OutputMessage("Framework : Resizing window to %f , %f \n", width, height);
 }
 
 bool Framework::IsKeyDown(int value)
@@ -215,6 +223,10 @@ LRESULT Framework::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	//if (!RenderSystem || !EventSystem)
 	//	return 0;
 
+	// Referances to subsystems
+	EventHandlerSubSystem* eventSystem = reinterpret_cast<EventHandlerSubSystem*>(SlitherFramework->GetGameCore()->GetSubSystemManager()->GetSubSystemByType(EventSystem));
+	//-------------------------
+
 	switch (uMsg)
 	{
 		case WM_NCCREATE:
@@ -243,6 +255,7 @@ LRESULT Framework::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			{
 				SlitherFramework->m_hWnd = nullptr;
 				SlitherFramework->m_CloseProgramRequested = true;
+				OutputMessage("Framework : Destroy event \n");
 			}
 			return 0;
 		case WM_ACTIVATE:
@@ -272,6 +285,7 @@ LRESULT Framework::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			{
 				PostQuitMessage(0);
 				SlitherFramework->m_CloseProgramRequested = true;
+				OutputMessage("Framework : Close Program Requested \n");
 			}
 			return 0;
 		case WM_KEYDOWN:
@@ -281,13 +295,16 @@ LRESULT Framework::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				if (keyWasPressedLastTimeMessageArrived == false)
 					{
 						if (wParam == VK_ESCAPE && SlitherFramework->m_UseEscapeToQuit)
+						{
 							SlitherFramework->m_CloseProgramRequested = true;
+							OutputMessage("Framework : Close Program Requested \n");
+						}	
 
 						SlitherFramework->m_KeyStates[wParam] = true;
 					}
 
 				Event* pEvent = new InputEvent(InputDeviceType_Keyboard, InputState_Pressed, (int)wParam, 0);
-				//EventSystem->QueueEvent(pEvent);
+				eventSystem->QueueEvent(pEvent);
 			}
 			return 0;
 		case WM_KEYUP:
@@ -301,7 +318,7 @@ LRESULT Framework::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				else
 				{
 					Event* pEvent = new InputEvent(InputDeviceType_Keyboard, InputState_Released, (int)wParam, 0);
-					//EventSystem->QueueEvent(pEvent);
+					eventSystem->QueueEvent(pEvent);
 				}
 				
 			}
@@ -312,7 +329,7 @@ LRESULT Framework::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				int y = GET_Y_LPARAM(lParam);
 
 				Event* pEvent = new InputEvent(InputDeviceType_Mouse, InputState_Held, -1, vec2((float)x, (float)y));
-				//EventSystem->QueueEvent(pEvent);
+				eventSystem->QueueEvent(pEvent);
 			}
 		return 0;
         case WM_LBUTTONDOWN:
@@ -323,7 +340,7 @@ LRESULT Framework::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				int y = GET_Y_LPARAM(lParam);
 
 				Event* pEvent = new InputEvent(InputDeviceType_Mouse, InputState_Pressed, 0, vec2((float)x, (float)y));
-				//EventSystem->QueueEvent(pEvent);
+				eventSystem->QueueEvent(pEvent);
 			}
         return 0;
 		case WM_LBUTTONUP:
@@ -334,7 +351,7 @@ LRESULT Framework::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				int y = GET_Y_LPARAM(lParam);
 
 				Event* pEvent = new InputEvent(InputDeviceType_Mouse, InputState_Released, 0, vec2((float)x, (float)y));
-				//EventSystem->QueueEvent(pEvent);
+				eventSystem->QueueEvent(pEvent);
 			}
 			return 0;
 		case WM_MENUCHAR:

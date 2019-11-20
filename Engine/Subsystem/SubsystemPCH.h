@@ -6,7 +6,9 @@
 #include "../XAudio/XAudioPCH.h"
 #include "../DX12/DX12PCH.h"
 #include "../Timers/TimersPCH.h"
+#include "../Events/EventsPCH.h"
 
+#include "../SlitherEngine/GameCore.h"
 
 #include "SlitherSubSystem.h"
 #include "AudioSubSystem.h"

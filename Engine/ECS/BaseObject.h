@@ -31,10 +31,23 @@ public:
 	inline virtual Transform3D GetTransform() { return m_Transform; }
 	inline virtual Transform2D Get2DTransform() { return m_Transform.TwoDimensional(); }
 	inline virtual void SetTransform(Transform3D newTransform) { m_Transform = newTransform; }
+
 	// Make a transform with just a position
 	inline virtual void SetTransform(Vector3 pos) { m_Transform = Transform3D(pos); }
 	// Make a transform with a position, rotation, and scale
 	inline virtual void SetTransform(Vector3 pos, Vector3 rot, Vector3 scal) { m_Transform = Transform3D(pos, rot, scal); }
+	// Get Object's position
+	inline virtual Vector3 GetObjectLocation() const { return m_Transform.location; }
+	// Get Object's rotation
+	inline virtual Vector3 GetObjectRotation() const { return m_Transform.rotation; }
+	// Get Object's scale
+	inline virtual Vector3 GetObjectScale() const { return m_Transform.scale; }
+	// Set Object's position
+	inline virtual void SetObjectLocation(Vector3 pos) { m_Transform.SetLocation(pos); }
+	// Set Object's rotation
+	inline virtual void SetObjectRotation(Vector3 rot) { m_Transform.SetRotation(rot); }
+	// Set Object's scale
+	inline virtual void SetObjectScale(Vector3 scale) { m_Transform.SetScale(scale); }
 
 	inline bool HasStarted() { return m_HasStarted; }
 
@@ -70,7 +83,6 @@ protected:
 		// Return the component
 		return comp;
 	}
-
 	template<class component>
 	component* CreateComponent(std::string componentName, BaseObject* owner)
 	{
@@ -86,7 +98,6 @@ protected:
 
 		return NULL;
 	}
-
 	template<class component>
 	component* CreateComponent(std::string componentName, BaseObject* owner, BaseObject* attchingObject)
 	{
@@ -109,6 +120,7 @@ protected:
 	BaseComponent* m_MainComponent = nullptr;
 	friend class BaseScene;
 	std::string m_ObjectName = "";
+
 private:
 	std::map<std::string, BaseComponent*> m_ObjectComponents;
 	Transform3D m_Transform;

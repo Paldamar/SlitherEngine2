@@ -23,5 +23,4 @@ public:
 	void CleanupInActiveTimers();
 protected:
 	std::map<std::string, Timer*> m_ActiveTimers;
-	std::map<std::string, Timer*> m_InactiveTimers;
 };

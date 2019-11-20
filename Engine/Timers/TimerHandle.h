@@ -5,7 +5,7 @@ typedef void (*TimerFunc)();
 
 enum TimerPriority
 {
-	High, // Timers under High will be updated at the begining of the frame.
+	High, // Timers under High will be updated at the beginning of the frame.
 	Low   // Timers under Low will be updated at the end of the frame.
 };
 
@@ -33,26 +33,26 @@ public:
 	bool operator == (const TimerHandle& o) 
 	{
 		return this->GetIsLooping() == o.GetIsLooping() &&
-			//this->GetOwningObject() == o.GetOwningObject() && // not compatible - cannot compare void pointers.
-			this->GetTargetDuration() == o.GetTargetDuration() &&
-			this->GetTimerImportance() == o.GetTimerImportance() &&
-			this->GetTimerName() == o.GetTimerName();
+			   //this->GetOwningObject() == o.GetOwningObject() && // not compatible - cannot compare void pointers.
+			   this->GetTargetDuration() == o.GetTargetDuration() &&
+			   this->GetTimerImportance() == o.GetTimerImportance() &&
+			   this->GetTimerName() == o.GetTimerName();
 	}
-
 	bool operator != (const TimerHandle& o)
+
 	{
 		return this->GetIsLooping() != o.GetIsLooping() ||
-			//this->GetOwningObject() != o.GetOwningObject() || // not compatible - cannot compare void pointers.
-			this->GetTargetDuration() != o.GetTargetDuration() ||
-			this->GetTimerImportance() != o.GetTimerImportance() ||
-			this->GetTimerName() != o.GetTimerName();
+			   //this->GetOwningObject() != o.GetOwningObject() || // not compatible - cannot compare void pointers.
+			   this->GetTargetDuration() != o.GetTargetDuration() ||
+			   this->GetTimerImportance() != o.GetTimerImportance() ||
+			   this->GetTimerName() != o.GetTimerName();
 	}
+
 protected:
 	bool m_IsLooping = false;
 	float m_TargetDuration = 0.001f;
 	std::string m_TimerName = "";
 	TimerPriority m_Importance = Low;
-
 	TimerFunc m_EndFunction = nullptr;
 
 	void* m_OwningObject = nullptr;

@@ -22,15 +22,15 @@ void EventHandlerSubSystem::QueueEvent(Event* event)
 	m_Events.push(event);
 }
 
-//void EventHandlerSubSystem::DispatchEvents(GameCore* gameCore)
-//{
-//	while (m_Events.empty() == false)
-//	{
-//		Event* event = m_Events.front();
-//
-//		gameCore->OnEvent(event);
-//		m_Events.pop();
-//
-//		SafeDelete(event);
-//	}
-//}
+void EventHandlerSubSystem::DispatchEvents(GameCore* gameCore)
+{
+	while (m_Events.empty() == false)
+	{
+		Event* event = m_Events.front();
+
+		gameCore->OnEvent(event);
+		m_Events.pop();
+
+		SafeDelete(event);
+	}
+}
