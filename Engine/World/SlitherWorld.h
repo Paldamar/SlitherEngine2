@@ -1,11 +1,13 @@
 #pragma once
 
+#include "../Math/Transform3D.h"
+class BaseScene;
 
-class World
+class SlitherWorld
 {
 public:
-	World();
-	~World();
+	SlitherWorld();
+	~SlitherWorld();
 
 	BaseScene* GetScene(std::string sceneName);
 	bool DoesSceneExist(std::string sceneName);
@@ -79,6 +81,11 @@ public:
 
 		return spawnedObject;
 	}
+
+	void Update(float deltaTime);
+	void Draw();
+
+	void CleanupWorld();
 
 protected:
 	std::map<std::string, BaseScene*> m_SceneMap;

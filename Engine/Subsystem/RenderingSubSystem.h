@@ -7,7 +7,7 @@ class RenderingSubSystem :
 	public SlitherSubSystem, public FBXRenderer
 {
 public:
-	RenderingSubSystem(std::string systemName, SubSystemID instanceID = NULLSystem);
+	RenderingSubSystem(std::string systemName, Framework* engineInstance, SubSystemID instanceID = NULLSystem);
 	~RenderingSubSystem();
 
 	virtual void Init() override;

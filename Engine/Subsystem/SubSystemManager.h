@@ -1,17 +1,18 @@
 #pragma once
 class SlitherSubSystem;
+class Framework;
 
 class SubSystemManager
 {
 public:
-	SubSystemManager();
+	SubSystemManager(Framework* engineInstance);
 	~SubSystemManager();
 
 	SlitherSubSystem* GetSubSystemByName(std::string systemName);
 	SlitherSubSystem* GetSubSystemByType(SubSystemID ID);
 
 	template<class subsystem>
-	subsystem* CreateSubSystem(std::string systemName, SubSystemID instanceID);
+	inline subsystem* CreateSubSystem(std::string systemName, SubSystemID instanceID);
 
 
 	void Update(float deltaTime);
@@ -19,7 +20,7 @@ public:
 
 private:
 	std::map<std::string, SlitherSubSystem*> m_EngineSubSystems;
-	//GameCore* m_EngineInstance;
+	Framework* m_EngineInstance;
 	bool AddSystemToEngine(SlitherSubSystem* system, std::string systemName);
 };
 
@@ -38,7 +39,7 @@ inline subsystem* SubSystemManager::CreateSubSystem(std::string systemName, SubS
 			return NULL;
 	}
 	
-	subsystem* system = new subsystem(/*m_EngineInstance, */systemName, instanceID);
+	subsystem* system = new subsystem(systemName, m_EngineInstance, instanceID);
 	m_EngineSubSystems[systemName] = system;
 	return system;
 }

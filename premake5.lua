@@ -184,7 +184,6 @@ project "DirectX"
 	
 	links {
         "Math",
-		"SubSystem"
     }
 
     filter "configurations:Debug"
@@ -217,7 +216,8 @@ project "SubSystem"
 	links {
         "Math",
 		"Events",
-		"Timers"
+		"Timers",
+		"World"
     }
 
     filter "configurations:Debug"
@@ -269,7 +269,7 @@ project "XAudio"
 	
 	links {
         "Math",
-		"Subsystem"
+		"EngineMacros"
     }
 
     filter "configurations:Debug"
@@ -278,7 +278,7 @@ project "XAudio"
 ------------------------------------------------ World Project
 project "World"
     location    "build"
-	dependson   {"EngineMacros", "Math", "XAudio"}
+	dependson   {"EngineMacros", "Math"}
     kind        "StaticLib"
     language    "C++"
     pchheader   "WorldPCH.h"
@@ -298,8 +298,7 @@ project "World"
 	
 	links {
         "Math",
-		"Subsystem",
-		"XAudio"
+		"EngineMacros"
     }
 
     filter "configurations:Debug"

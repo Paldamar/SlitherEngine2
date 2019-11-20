@@ -2,11 +2,12 @@
 
 class SlitherSubSystem;
 class AudioEngine;
+class Framework;
 
 class AudioSubSystem : public SlitherSubSystem
 {
 public:
-	AudioSubSystem(std::string systemName, SubSystemID instanceID = NULLSystem);
+	AudioSubSystem(std::string systemName, Framework* engineInstance, SubSystemID instanceID = NULLSystem);
 	~AudioSubSystem();
 
 	virtual void Init();

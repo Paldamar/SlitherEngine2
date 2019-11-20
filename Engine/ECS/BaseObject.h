@@ -54,6 +54,11 @@ public:
 	inline std::string GetObjectName() { return m_ObjectName; }
 	inline void SetName(std::string newName) { m_ObjectName = newName; }
 
+	inline bool IsActive() const { return m_IsActive; }
+
+	// Returns true if successful
+	virtual bool Kill();
+
 protected:
 	virtual void Startup();
 
@@ -128,5 +133,6 @@ private:
 	template<class ObjectType>
 	static const ObjectType m_ObjectType;
 	bool m_HasStarted = false;
+	bool m_IsActive;
 };
 

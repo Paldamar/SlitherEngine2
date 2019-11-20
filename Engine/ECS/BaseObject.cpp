@@ -2,8 +2,7 @@
 #include "BaseObject.h"
 
 BaseObject::BaseObject()
-{
-	
+{	
 }
 
 BaseObject::~BaseObject()
@@ -41,6 +40,12 @@ bool BaseObject::ObjectHasTag(std::string Tag)
 	}
 
 	return false;
+}
+
+bool BaseObject::Kill()
+{
+	m_IsActive = false;
+	return true;
 }
 
 void BaseObject::Startup()

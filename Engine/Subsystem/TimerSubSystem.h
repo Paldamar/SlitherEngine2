@@ -3,13 +3,12 @@
 class SlitherSubSystem;
 class Timer;
 
+
 class TimerSubSystem :	public SlitherSubSystem
 {
 public:
-	TimerSubSystem(std::string systemName, SubSystemID instanceID = NULLSystem);
-	~TimerSubSystem();
-
-	virtual void Init() override;
+	TimerSubSystem(std::string systemName, Framework* engineInstance, SubSystemID instanceID = NULLSystem);
+	virtual ~TimerSubSystem();
 
 	virtual void UpdateLowPriotityTimers(float deltaTime);
 	virtual void UpdateHighPriotityTimers(float deltaTime);
@@ -23,4 +22,8 @@ public:
 	void CleanupInActiveTimers();
 protected:
 	std::map<std::string, Timer*> m_ActiveTimers;
+#if !DESTROY_INACTIVE_TIMERS
+	std::map<std::string, Timer*> m_InactiveTimers;
+#endif // !DESTROY_INACTIVE_TIMERS
+
 };

@@ -1,4 +1,5 @@
 #pragma once
+
 class BaseObject;
 
 class BaseScene
@@ -17,11 +18,16 @@ public:
 	virtual void Draw();
 
 	bool IsAffectedByPhysics() { return true; }
+
+	virtual void CleanupKilledObjects();
 protected:
 	virtual void Startup();
 	friend BaseScene;
 protected:
 	std::map<std::string, BaseObject*> m_SceneObjects;
+#if !DESTROY_GAMEOBJECTS_DURING_RUNTIME
+	std::map<std::string, BaseObject*> m_KilledOjbects;
+#endif
 	std::string m_SceneName;	
 	bool m_AffectedByPhysics;
 };
