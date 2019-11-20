@@ -2,3 +2,7 @@
 
 #define WINDOW_WIDTH 1920
 #define WINDOW_HEIGHT 1080
+#define WINDOW_MIN_WIDTH 640
+#define WINDOW_MIN_HEIGHT 480
+
+#define USE_ESC_TO_QUIT true

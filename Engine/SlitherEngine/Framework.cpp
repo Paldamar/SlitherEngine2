@@ -12,7 +12,7 @@ Framework::Framework()
 {
 	m_GameCore = nullptr;
 
-	m_UseEscapeToQuit = true;
+	m_UseEscapeToQuit = USE_ESC_TO_QUIT;
 	m_CloseProgramRequested = false;
 
 	m_InitialWindowWidth = -1;
@@ -44,8 +44,8 @@ void Framework::Init(int width, int height, HINSTANCE hInstance)
 {
 	OutputMessage("Framework : Init \n");
 
-	m_InitialWindowWidth = width;
-	m_InitialWindowHeight = height;
+	(width > WINDOW_MIN_WIDTH) ? m_InitialWindowWidth = width : m_InitialWindowWidth = WINDOW_WIDTH;
+	(height > WINDOW_MIN_HEIGHT) ? m_InitialWindowHeight = height : m_InitialWindowHeight = WINDOW_HEIGHT;
 
 	m_CurrentWindowWidth = m_InitialWindowWidth;
 	m_CurrentWindowHeight = m_InitialWindowHeight;
@@ -63,9 +63,7 @@ void Framework::Init(int width, int height, HINSTANCE hInstance)
 		directXSystem->SetCallBack(Framework::WndProc);
 		directXSystem->SetAppInst(hInstance);
 		directXSystem->Init();
-	}
-
-	
+	}	
 }
 
 int Framework::Run(GameCore* pGameCore)
@@ -74,15 +72,19 @@ int Framework::Run(GameCore* pGameCore)
 	m_GameCore->OnSurfaceChanged(m_CurrentWindowWidth, m_CurrentWindowHeight);
 	m_GameCore->LoadContent();
 
+	m_GameTimer.Reset();
+
 	double lastTime = GetSystemTime();
 
 	// Our game loop.
 	MSG msg;
 	bool done = false;
 
-	// Keep referances of subsystems here
-	TimerSubSystem* timerSystem = reinterpret_cast<TimerSubSystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByType(Timers));
-	EventHandlerSubSystem* eventHandler = reinterpret_cast<EventHandlerSubSystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByType(EventSystem));
+	// Keep references of subsystems here
+	TimerSubSystem* timerSystem = 
+		reinterpret_cast<TimerSubSystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByType(Timers));
+	EventHandlerSubSystem* eventHandler = 
+		reinterpret_cast<EventHandlerSubSystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByType(EventSystem));
 	// ---------------------------------
 
 	OutputMessage("Framework : Starting Gameloop \n");
@@ -114,12 +116,13 @@ int Framework::Run(GameCore* pGameCore)
 				}
 				else
 				{
+					m_GameTimer.Tick();
 					eventHandler->DispatchEvents(m_GameCore);
 
 					OutputMessage("TimerSubSystem : Updating High Priority Timers \n");
 					timerSystem->UpdateHighPriotityTimers(deltaTime);
 
-					m_GameCore->GetFramework()->WndProc(m_hWnd, msg.message, m_wParam, m_lParam);
+					//m_GameCore->GetFramework()->WndProc(m_hWnd, msg.message, m_wParam, m_lParam);
 
 					//m_GameCore->GetSubSystemManager()->Update(deltaTime);
 
@@ -217,14 +220,9 @@ LRESULT Framework::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	if (SlitherFramework == nullptr)
 		return DefWindowProc(hWnd, uMsg, wParam, lParam);
 
-	//RenderingSubSystem* RenderSystem = (RenderingSubSystem*)SlitherFramework->GetGameCore()->GetSubSystemManager()->GetSubSystemByType(SubSystemID::DXSystem);
-	//EventHandlerSubSystem* EventSystem = (EventHandlerSubSystem*)SlitherFramework->GetGameCore()->GetSubSystemManager()->GetSubSystemByType(SubSystemID::EventSystem);
-
-	//if (!RenderSystem || !EventSystem)
-	//	return 0;
-
-	// Referances to subsystems
-	EventHandlerSubSystem* eventSystem = reinterpret_cast<EventHandlerSubSystem*>(SlitherFramework->GetGameCore()->GetSubSystemManager()->GetSubSystemByType(EventSystem));
+	// References to subsystems
+	EventHandlerSubSystem* eventSystem = 
+		reinterpret_cast<EventHandlerSubSystem*>(SlitherFramework->GetGameCore()->GetSubSystemManager()->GetSubSystemByType(EventSystem));
 	//-------------------------
 
 	switch (uMsg)
