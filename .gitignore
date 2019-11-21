@@ -1,4 +1,12 @@
-
-build/
+build/.vs/
+build/*.vcxproj
+build/*.vcxproj.filters
+build/*.sln
+build/*.vcxproj.user
+build/obj/
+build/bin/x64/Debug/*.lib
+build/bin/x64/Debug/*.pdb
+build/bin/x64/Debug/*.exe
+build/bin/x64/Debug/*.ilk
 
 Libraries/FBX_SDK/lib/

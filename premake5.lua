@@ -326,8 +326,20 @@ project "PhsyX"
 	links {
         "Math",
 		"Subsystem",
-		"XAudio"
+		"XAudio",
+		"Libraries/PhysX/PhysX_64.lib",
+		"Libraries/PhysX/PhysXCharacterKinematic_static_64.lib",
+		"Libraries/PhysX/PhysXCommon_64.lib",
+		"Libraries/PhysX/PhysXCooking_64.lib",
+		"Libraries/PhysX/PhysXExtensions_static_64.lib",
+		"Libraries/PhysX/PhysXFoundation_64.lib",
+		"Libraries/PhysX/PhysXPvdSDK_static_64.lib",
+		"Libraries/PhysX/PhysXVehicle_static_64.lib",
     }
+
+	linkoptions {
+		"/ignore:4006"
+	}
 
     filter "configurations:Debug"
         defines { "DEBUG" }
