@@ -23,8 +23,8 @@ public:
 	inline float LengthSquared() const { return x * x + y * y + z * z; }
 	inline float Length() const { return sqrtf(x * x + y * y + z * z); }
 
-	inline Vector3 GetNormalized() const { float len = Length(); if (MathLibrary::fequal(len, 0)) return Vector3(x, y, z); len = 1.0f / len; return Vector3(x * len, y * len, z * len); }
-	inline Vector3 Normalize() { float len = Length(); if (!MathLibrary::fequal(len, 0)) { x /= len; y /= len; z /= len; } return *this; }
+	inline Vector3 GetNormalized() const { float len = Length(); if (SlitherMathLibrary::fequal(len, 0)) return Vector3(x, y, z); len = 1.0f / len; return Vector3(x * len, y * len, z * len); }
+	inline Vector3 Normalize() { float len = Length(); if (!SlitherMathLibrary::fequal(len, 0)) { x /= len; y /= len; z /= len; } return *this; }
 	inline Vector3 Cross(const Vector3& o) const { return Vector3((y * o.z - z * o.y), (z * o.x - x * o.z), (x * o.y - y * o.x)); }
 	inline float Dot(const Vector3& o) const { return x * o.x + y * o.y + z * o.z; }
 	inline Vector3 Add(const Vector3& o) const { return Vector3(this->x + o.x, this->y + o.y, this->z + o.z); }
@@ -34,8 +34,8 @@ public:
 	inline Vector3 DivideComponents(const Vector3& o) const { return Vector3(this->x / o.x, this->y / o.y, this->z / o.z); }
 	inline Vector3 Zero() const { return Vector3(0, 0, 0); }
 
-	inline bool operator ==(const Vector3& o) const { return MathLibrary::fequal(this->x, o.x) && MathLibrary::fequal(this->y, o.y) && MathLibrary::fequal(this->z, o.z); }
-	inline bool operator !=(const Vector3& o) const { return !MathLibrary::fequal(this->x, o.x) || !MathLibrary::fequal(this->y, o.y) || !MathLibrary::fequal(this->z, o.z); }
+	inline bool operator ==(const Vector3& o) const { return SlitherMathLibrary::fequal(this->x, o.x) && SlitherMathLibrary::fequal(this->y, o.y) && SlitherMathLibrary::fequal(this->z, o.z); }
+	inline bool operator !=(const Vector3& o) const { return !SlitherMathLibrary::fequal(this->x, o.x) || !SlitherMathLibrary::fequal(this->y, o.y) || !SlitherMathLibrary::fequal(this->z, o.z); }
 
 	inline Vector3 operator -() const { return Vector3(-this->x, -this->y, -this->z); }
 	inline Vector3 operator *(const float o) const { return Vector3(this->x * o, this->y * o, this->z * o); }

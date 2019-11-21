@@ -48,6 +48,7 @@ void BaseScene::AddObjectToScene(BaseObject* object)
 	assert(m_SceneObjects.find(object->GetObjectName()) == m_SceneObjects.end());
 
 	m_SceneObjects.insert(std::pair<std::string, BaseObject*>(object->GetObjectName(), object));
+	object->m_Scene = this;
 }
 
 void BaseScene::Update(float deltaTime)
@@ -59,7 +60,8 @@ void BaseScene::Update(float deltaTime)
 			GameObject.second->Startup();
 		}
 
-		GameObject.second->Update(deltaTime);
+		if (GameObject.second->CanTick())
+			GameObject.second->Update(deltaTime);
 	}
 }
 

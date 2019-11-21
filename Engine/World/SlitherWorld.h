@@ -92,13 +92,14 @@ public:
 			return NULL;
 
 		m_SceneMap[sceneName] = new sceneClass(sceneName);
+		m_SceneMap[sceneName]->m_World = this;
 	}
 
 	template<class sceneClass>
 	sceneClass* MakeScene(std::string sceneName, bool affectedByPhysics)
 	{
 		sceneClass* scene = MakeScene(sceneName)
-		if();
+		if(scene);
 		{
 			scene->SetAffectedByPhysics(affectedByPhysics);
 		}
