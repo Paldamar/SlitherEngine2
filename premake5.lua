@@ -43,6 +43,10 @@ project "MainGame"
 		"Engine/XAudio",
 		"PhsyX",
 		"EngineMacros",
+		"Libraries/PhysX/pxshared/include",
+		"Libraries/PhysX/physx/include",
+		"Libraries/PhysX/physx/source/foundation/include",
+		"Libraries/PhysX/physx/source/common/src"
     }
 
     files {
@@ -103,6 +107,10 @@ project "SlitherEngine"
 		"Engine/XAudio",
 		"PhsyX",
 		"EngineMacros",
+		"Libraries/PhysX/pxshared/include",
+		"Libraries/PhysX/physx/include",
+		"Libraries/PhysX/physx/source/foundation/include",
+		"Libraries/PhysX/physx/source/common/src"
     }
 
     files {
@@ -315,7 +323,12 @@ project "PhsyX"
 
     includedirs {
 		"Engine/EngineMacros",
-		"Engine/Math"
+		"Engine/Math",
+		"Engine/Subsystem",
+		"Libraries/PhysX/pxshared/include",
+		"Libraries/PhysX/physx/include",
+		"Libraries/PhysX/physx/source/foundation/include",
+		"Libraries/PhysX/physx/source/common/src"
     }
 
     files {
