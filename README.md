@@ -14,5 +14,4 @@ Timer functionality
 ```
 Ian Wigle
 Niall Burton
-Devery
- ```
+```
