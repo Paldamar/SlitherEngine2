@@ -41,7 +41,7 @@ project "MainGame"
 		"Engine/DirectX",
 		"Engine/ECS",
 		"Engine/XAudio",
-		"PhsyX",
+		"Engine/PhsyX",
 		"EngineMacros",
 		"Libraries/PhysX/pxshared/include",
 		"Libraries/PhysX/physx/include",
@@ -71,7 +71,8 @@ project "MainGame"
         "Math",
 		"DirectX",
 		"SubSystem",
-		
+		"ECS",
+		"PhsyX"		
     }
 
     filter "configurations:Debug"
@@ -105,7 +106,7 @@ project "SlitherEngine"
 		"Engine/DirectX",
 		"Engine/ECS",
 		"Engine/XAudio",
-		"PhsyX",
+		"Engine/PhsyX",
 		"EngineMacros",
 		"Libraries/PhysX/pxshared/include",
 		"Libraries/PhysX/physx/include",
@@ -122,7 +123,9 @@ project "SlitherEngine"
         "Math",
 		"DirectX",
 		"SubSystem",
-		"XAudio"
+		"XAudio",
+		"ECS",
+		"PhsyX"
     }
 
     filter "configurations:Debug"
@@ -315,7 +318,7 @@ project "World"
 ------------------------------------------------ PhsyX Project
 project "PhsyX"
     location    "build"
-	dependson   {"EngineMacros", "Math"}
+	dependson   {"EngineMacros", "Math", "ECS"}
     kind        "StaticLib"
     language    "C++"
     pchheader   "PhsyXPCH.h"
@@ -325,6 +328,7 @@ project "PhsyX"
 		"Engine/EngineMacros",
 		"Engine/Math",
 		"Engine/Subsystem",
+		"Engine/ECS",
 		"Libraries/PhysX/pxshared/include",
 		"Libraries/PhysX/physx/include",
 		"Libraries/PhysX/physx/source/foundation/include",
@@ -340,6 +344,7 @@ project "PhsyX"
         "Math",
 		"Subsystem",
 		"XAudio",
+		"ECS",
 		"Libraries/PhysX/PhysX_64.lib",
 		"Libraries/PhysX/PhysXCharacterKinematic_static_64.lib",
 		"Libraries/PhysX/PhysXCommon_64.lib",
