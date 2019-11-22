@@ -1,7 +1,7 @@
 # Description:
 SlitherEngine2 is an engine currently in development. This engine is being made as a result of an assignment within the Algonquin College Game Development program.
 
-# Current Modules:
+### Current Modules:
 ```
 DirectX 12
 PhysX
@@ -13,9 +13,10 @@ World Scenes
 Timer functionality
 ```
 
-# Creators:
+### Creators:
 ```
-Ian Wigle
-Niall Burton
-Devery Turcotte
+* **Ian Wigle**
+* **Niall Burton**
+* **Devery Turcotte**
 ```
+
