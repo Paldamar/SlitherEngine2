@@ -1,7 +1,5 @@
-Current Modules:
-
+# Current Modules:
 ```
-Current Modules
 DirectX 12
 PhysX
 XAudio
@@ -11,3 +9,9 @@ SubSystem
 World Scenes
 Timer functionality
 ```
+
+# Creators:
+  Ian Wigle
+  Niall Burton
+  Devery
+# 
