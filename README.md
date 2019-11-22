@@ -1,4 +1,4 @@
-Current Modules: \n
+Current Modules:
 
 ```Current Modules
 DirectX 12
