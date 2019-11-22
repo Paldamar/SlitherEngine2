@@ -11,7 +11,9 @@ Timer functionality
 ```
 
 # Creators:
+```
   Ian Wigle
   Niall Burton
   Devery
+ ```
 # 
