@@ -17,5 +17,5 @@ Timer functionality
 ```
 Ian Wigle
 Niall Burton
-Devery
+Devery Lewis Turcotte
 ```
