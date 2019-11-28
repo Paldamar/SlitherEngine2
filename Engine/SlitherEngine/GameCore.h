@@ -8,7 +8,7 @@ class GameCore
 {
 public:
 	GameCore(Framework* frameWork);
-	~GameCore();
+	virtual ~GameCore();
 
 	virtual void LoadContent() {};
 	virtual void OnSurfaceChanged(unsigned int width, unsigned int height);
