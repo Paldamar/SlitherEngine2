@@ -72,7 +72,15 @@ project "MainGame"
 		"DirectX",
 		"SubSystem",
 		"ECS",
-		"PhsyX"		
+		"PhsyX",
+		"Libraries/PhysX/PhysX_64.lib",
+		"Libraries/PhysX/PhysXCharacterKinematic_static_64.lib",
+		"Libraries/PhysX/PhysXCommon_64.lib",
+		"Libraries/PhysX/PhysXCooking_64.lib",
+		"Libraries/PhysX/PhysXExtensions_static_64.lib",
+		"Libraries/PhysX/PhysXFoundation_64.lib",
+		"Libraries/PhysX/PhysXPvdSDK_static_64.lib",
+		"Libraries/PhysX/PhysXVehicle_static_64.lib",	
     }
 
     filter "configurations:Debug"

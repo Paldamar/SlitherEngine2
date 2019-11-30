@@ -16,8 +16,8 @@ PhysXWorld::~PhysXWorld()
 
 bool PhysXWorld::Init(ContactReportCallback* contactReport)
 {
-	PxDefaultAllocator allocator;
-	PxDefaultErrorCallback errorCallback;
+	static PxDefaultAllocator allocator;
+	static PxDefaultErrorCallback errorCallback;
 
 	m_Foundation = PxCreateFoundation(PX_PHYSICS_VERSION, allocator, errorCallback);
 	if (!m_Foundation)

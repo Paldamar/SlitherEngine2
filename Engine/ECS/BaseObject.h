@@ -59,7 +59,6 @@ public:
 	// Returns true if successful
 	virtual bool Kill();
 
-protected:
 	virtual void Startup();
 
 	template<class component>
@@ -69,7 +68,7 @@ protected:
 		assert(m_ObjectComponents.find(componentName) == m_ObjectComponents.end());
 
 		// Create the component
-		BaseComponent* comp = new component;
+		component* comp = new component;
 
 		// If the creation failed.
 		if (!comp)
@@ -91,7 +90,7 @@ protected:
 	template<class component>
 	component* CreateComponent(std::string componentName, BaseObject* owner)
 	{
-		component* newComponent = CreateComponent(componentName);
+		component* newComponent = CreateComponent<component>(componentName);
 
 		if (newComponent)
 		{
