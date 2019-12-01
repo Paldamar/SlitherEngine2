@@ -18,3 +18,5 @@
 #include "TimerSubSystem.h"
 #include "WorldsSubSystem.h"
 #include "SubSystemManager.h"
+
+#pragma warning(disable : 26495)

@@ -16,7 +16,7 @@ UINT Textures::GetSize() const
 
 int Textures::GetTextureIndex(std::string Name) const
 {
-	if (Name == "skyCubdeMap") return mTextures.size();
+	if (Name == "skyCubdeMap") return (int)mTextures.size();
 
 	int result = 0;
 	for (auto & e : mOrderTexture)
@@ -41,7 +41,7 @@ void Textures::SetTexture(
 	temp->Name = Name;
 	temp->Filename = szFileName;
 	std::string format;
-	for (int i = szFileName.size() - 3; i < szFileName.size(); ++i)
+	for (int i = (int)szFileName.size() - 3; i < (int)szFileName.size(); ++i)
 		format.push_back(szFileName[i]);
 		
 	if (format == "dds")
@@ -74,7 +74,7 @@ void Textures::SetTexture(
 		temp->Name = Name[i];
 		temp->Filename = szFileName[i];
 		std::string format;
-		for (int j = szFileName[i].size() - 3; j < szFileName[i].size(); ++j)
+		for (int j = (int)szFileName[i].size() - 3; j < (int)szFileName[i].size(); ++j)
 			format.push_back(szFileName[i][j]);
 
 		if (format == "dds")

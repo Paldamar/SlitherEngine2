@@ -1,6 +1,7 @@
 #pragma once
 
 class BaseObject;
+class SlitherWorld;
 
 class BaseScene
 {
@@ -21,9 +22,11 @@ public:
 	void SetAffectedByPhysics(bool toggle) { m_AffectedByPhysics = toggle; }
 
 	virtual void CleanupKilledObjects();
+
+	SlitherWorld* GetWorld() { return m_World; }
 protected:
 	virtual void Startup();
-	friend BaseScene;
+
 protected:
 	std::map<std::string, BaseObject*> m_SceneObjects;
 #if !DESTROY_GAMEOBJECTS_DURING_RUNTIME
@@ -31,5 +34,10 @@ protected:
 #endif
 	std::string m_SceneName;	
 	bool m_AffectedByPhysics = false;
+
+	// World that this scene is in.
+	SlitherWorld* m_World;
+
+	friend class SlitherWorld;
 };
 

@@ -23,7 +23,7 @@ public:
 	}
 
 	template<class worldType>
-	worldType* CreateWorld(std::string worldName, int numberStartingScenes = 1)
+	worldType* CreateWorld(std::string worldName, int numberStartingScenes)
 	{
 		worldType* world = CreateWorld(worldName);
 

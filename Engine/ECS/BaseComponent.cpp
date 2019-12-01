@@ -7,5 +7,5 @@ BaseComponent::BaseComponent() : BaseObject()
 
 void BaseComponent::Startup()
 {
-	BaseObject::Startup();
+	//BaseObject::Startup();
 }

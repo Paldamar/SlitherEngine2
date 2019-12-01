@@ -88,6 +88,8 @@ int DirectX::GetDXGIFormatBitsPerPixel(DXGI_FORMAT& dxgiFormat)
 	else if (dxgiFormat == DXGI_FORMAT_R16_UNORM) return 16;
 	else if (dxgiFormat == DXGI_FORMAT_R8_UNORM) return 8;
 	else if (dxgiFormat == DXGI_FORMAT_A8_UNORM) return 8;
+
+	return 0;
 }
 
 int DirectX::LoadImageDataFromFile(BYTE** imageData, D3D12_RESOURCE_DESC& textureDesc, LPCWSTR filename, int &bytesPerRow)

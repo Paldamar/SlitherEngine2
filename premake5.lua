@@ -1,3 +1,4 @@
+
 ------------------------------------------------ Solution
 workspace "Game"
     configurations  { "Debug", "Release" }
@@ -41,8 +42,12 @@ project "MainGame"
 		"Engine/DirectX",
 		"Engine/ECS",
 		"Engine/XAudio",
-		"PhsyX",
+		"Engine/PhsyX",
 		"EngineMacros",
+		"Libraries/PhysX/pxshared/include",
+		"Libraries/PhysX/physx/include",
+		"Libraries/PhysX/physx/source/foundation/include",
+		"Libraries/PhysX/physx/source/common/src"
     }
 
     files {
@@ -67,7 +72,16 @@ project "MainGame"
         "Math",
 		"DirectX",
 		"SubSystem",
-		
+		"ECS",
+		"PhsyX",
+		"Libraries/PhysX/PhysX_64.lib",
+		"Libraries/PhysX/PhysXCharacterKinematic_static_64.lib",
+		"Libraries/PhysX/PhysXCommon_64.lib",
+		"Libraries/PhysX/PhysXCooking_64.lib",
+		"Libraries/PhysX/PhysXExtensions_static_64.lib",
+		"Libraries/PhysX/PhysXFoundation_64.lib",
+		"Libraries/PhysX/PhysXPvdSDK_static_64.lib",
+		"Libraries/PhysX/PhysXVehicle_static_64.lib",	
     }
 
     filter "configurations:Debug"
@@ -101,8 +115,12 @@ project "SlitherEngine"
 		"Engine/DirectX",
 		"Engine/ECS",
 		"Engine/XAudio",
-		"PhsyX",
+		"Engine/PhsyX",
 		"EngineMacros",
+		"Libraries/PhysX/pxshared/include",
+		"Libraries/PhysX/physx/include",
+		"Libraries/PhysX/physx/source/foundation/include",
+		"Libraries/PhysX/physx/source/common/src"
     }
 
     files {
@@ -114,7 +132,9 @@ project "SlitherEngine"
         "Math",
 		"DirectX",
 		"SubSystem",
-		"XAudio"
+		"XAudio",
+		"ECS",
+		"PhsyX"
     }
 
     filter "configurations:Debug"
@@ -307,7 +327,7 @@ project "World"
 ------------------------------------------------ PhsyX Project
 project "PhsyX"
     location    "build"
-	dependson   {"EngineMacros", "Math"}
+	dependson   {"EngineMacros", "Math", "ECS"}
     kind        "StaticLib"
     language    "C++"
     pchheader   "PhsyXPCH.h"
@@ -315,7 +335,13 @@ project "PhsyX"
 
     includedirs {
 		"Engine/EngineMacros",
-		"Engine/Math"
+		"Engine/Math",
+		"Engine/Subsystem",
+		"Engine/ECS",
+		"Libraries/PhysX/pxshared/include",
+		"Libraries/PhysX/physx/include",
+		"Libraries/PhysX/physx/source/foundation/include",
+		"Libraries/PhysX/physx/source/common/src"
     }
 
     files {
@@ -326,8 +352,21 @@ project "PhsyX"
 	links {
         "Math",
 		"Subsystem",
-		"XAudio"
+		"XAudio",
+		"ECS",
+		"Libraries/PhysX/PhysX_64.lib",
+		"Libraries/PhysX/PhysXCharacterKinematic_static_64.lib",
+		"Libraries/PhysX/PhysXCommon_64.lib",
+		"Libraries/PhysX/PhysXCooking_64.lib",
+		"Libraries/PhysX/PhysXExtensions_static_64.lib",
+		"Libraries/PhysX/PhysXFoundation_64.lib",
+		"Libraries/PhysX/PhysXPvdSDK_static_64.lib",
+		"Libraries/PhysX/PhysXVehicle_static_64.lib",
     }
+
+	linkoptions {
+		"/ignore:4006"
+	}
 
     filter "configurations:Debug"
         defines { "DEBUG" }

@@ -2,9 +2,9 @@
 
 using namespace DirectX;
 
-const float MathLibrary::Infinity = FLT_MAX;
+const float SlitherMathLibrary::Infinity = FLT_MAX;
 
-float MathLibrary::AngleFromXY(float x, float y)
+float SlitherMathLibrary::AngleFromXY(float x, float y)
 {
 	float theta = 0.0f;
 
@@ -22,7 +22,7 @@ float MathLibrary::AngleFromXY(float x, float y)
 	return theta;
 }
 
-DirectX::XMVECTOR MathLibrary::RandUnitVec3()
+DirectX::XMVECTOR SlitherMathLibrary::RandUnitVec3()
 {
 	XMVECTOR One = XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f);
 	XMVECTOR Zero = XMVectorZero();
@@ -44,7 +44,7 @@ DirectX::XMVECTOR MathLibrary::RandUnitVec3()
 	}
 }
 
-DirectX::XMVECTOR MathLibrary::RandHemisphereUnitVec3(DirectX::XMVECTOR n)
+DirectX::XMVECTOR SlitherMathLibrary::RandHemisphereUnitVec3(DirectX::XMVECTOR n)
 {
 	XMVECTOR One = XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f);
 	XMVECTOR Zero = XMVectorZero();

@@ -106,9 +106,9 @@ void FBXGenerator::BuildFBXGeometry(const std::vector<Vertex>& outVertices,
 	submesh.BaseVertexLocation = vertexOffset;
 
 	//TODO Week 7: ADD outVertices.size() to vertexOffset
-	vertexOffset += outVertices.size();
+	vertexOffset += (UINT)outVertices.size();
 	//TODO Week 7: ADD outIndices.size() to indexOffset
-	indexOffset += outIndices.size();
+	indexOffset += (UINT)outIndices.size();
 
 	// vertex
 	//TODO Week 7: DECLARE a variable called vertices of type std::vector<Vertex> and initialize it passing in vertexOffset

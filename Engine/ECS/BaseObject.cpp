@@ -1,5 +1,5 @@
 #include "ECSPCH.h"
-#include "BaseObject.h"
+#include "../World/WorldPCH.h"
 
 BaseObject::BaseObject()
 {	
@@ -48,6 +48,23 @@ bool BaseObject::Kill()
 	return true;
 }
 
+SlitherWorld* BaseObject::GetWorld()
+{
+	if (m_Scene)
+	{
+		if (m_Scene->GetWorld())
+		{
+			return m_Scene->GetWorld();
+		}
+		else
+			return nullptr;
+	}
+	else
+		return nullptr;
+
+	return nullptr;
+}
+
 void BaseObject::Startup()
 {
 	if (m_MainComponent == nullptr)
@@ -63,13 +80,22 @@ void BaseObject::Startup()
 	m_HasStarted = true;
 }
 
-void BaseObject::AttachTo(BaseObject* attachingObject, bool useAttachingTransform)
+void BaseObject::UpdateAttachedObjects()
 {
-	AttachTo(attachingObject);
+	for (BaseObject* obj : m_AttachedObjects)
+	{
+		obj->SetTransform(m_Transform + obj->m_OffsetFromAttachedObject);
+	}
+}
+
+void BaseObject::AttachTo(BaseObject* attachingObject, bool useAttachingTransform, Transform3D offset)
+{
+	m_AttachedObjects.push_back(attachingObject);
+	m_OffsetFromAttachedObject = offset;
 
 	if (useAttachingTransform)
 	{
-		SetTransform(attachingObject->GetTransform());
+		SetTransform(m_Transform + offset);
 	}
 }
 

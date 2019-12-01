@@ -278,10 +278,12 @@ LRESULT Framework::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				if (!HIWORD(wParam))
 					{
 						SlitherFramework->m_WindowIsActive = true;
+						OutputMessage("Framework : Window is still active. \n");
 					}
 				else
 					{
 						SlitherFramework->m_WindowIsActive = false;
+						OutputMessage("Framework : Window is not active. \n");
 					}
 			}
 			return 0;
