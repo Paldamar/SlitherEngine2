@@ -442,3 +442,27 @@ project "Timers"
     filter "configurations:Debug"
         defines { "DEBUG" }
         symbols "On"
+		------------------------------------------------ Vulkan Project
+project "Vulkan"
+    location    "build"
+	dependson   {"EngineMacros"}
+    kind        "StaticLib"
+    language    "C++"
+    pchheader   "VulkanPCH.h"
+    pchsource   "Engine/Timers/VulkanPCH.cpp"
+
+    includedirs {
+		"Engine/EngineMacros"
+    }
+
+    files {
+        "Engine/VUlkan/**.cpp",
+        "Engine/VUlkan/**.h",
+    }
+	
+	links {
+    }
+
+    filter "configurations:Debug"
+        defines { "DEBUG" }
+        symbols "On"
