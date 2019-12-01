@@ -60,7 +60,7 @@ void RenderNode::AddRenderItem(std::unique_ptr<RenderItem> subRitem, RenderLayer
 	mRitems[(int)layer].push_back(subRitem.get());
 	mAllRitems.push_back( std::move(subRitem));
 
-	Renderer::GetRenderer()->RenderItemSize += mAllRitems.capacity();
+	Renderer::GetRenderer()->RenderItemSize += (UINT)mAllRitems.capacity();
 }
 
 void RenderNode::BuildSubRitems(

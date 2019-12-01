@@ -34,7 +34,7 @@ public:
 
 	inline virtual BaseObject* GetOwner() const { return m_Owner; }
 
-	virtual void AttachTo(BaseObject* attachingObject, bool useAttachingTransform, Transform3D offset = Transform3D(Vector3(0.0f)));
+	virtual void AttachTo(BaseObject* attachingObject, bool useAttachingTransform = false, Transform3D offset = Transform3D(Vector3(0.0f)));
 
 	BaseComponent* GetComponentByName(std::string name);
 
@@ -83,9 +83,6 @@ public:
 	inline void SetCanTick(bool tick) { m_CanTick = tick; }
 	inline bool CanTick() { return m_CanTick; }
 
-protected:
-	virtual void Startup();
-
 	template<class component>
 	component* CreateComponent(std::string componentName)
 	{
@@ -93,7 +90,7 @@ protected:
 		assert(m_ObjectComponents.find(componentName) == m_ObjectComponents.end());
 
 		// Create the component
-		BaseComponent* comp = new component;
+		component* comp = new component;
 
 		// If the creation failed.
 		if (!comp)
@@ -115,7 +112,7 @@ protected:
 	template<class component>
 	component* CreateComponent(std::string componentName, BaseObject* owner)
 	{
-		component* newComponent = CreateComponent(componentName);
+		component* newComponent = CreateComponent<component>(componentName);
 
 		if (newComponent)
 		{
@@ -141,6 +138,9 @@ protected:
 
 		return NULL;
 	}
+
+protected:
+	virtual void Startup();
 
 protected:
 	// Tags that are on this character.

@@ -10,7 +10,7 @@ BaseGameObject::~BaseGameObject()
 
 void BaseGameObject::Startup()
 {
-	BaseObject::Startup();
+	//BaseObject::Startup();
 }
 
 void BaseGameObject::Update(float deltaTime)

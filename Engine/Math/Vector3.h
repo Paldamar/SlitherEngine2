@@ -32,7 +32,7 @@ public:
 	inline Vector3 Scale(const float o) const { return Vector3(this->x * o, this->y * o, this->z * o); }
 	inline Vector3 MultiplyComponents(const Vector3& o) const { return Vector3(this->x * o.x, this->y * o.y, this->z * o.z); }
 	inline Vector3 DivideComponents(const Vector3& o) const { return Vector3(this->x / o.x, this->y / o.y, this->z / o.z); }
-	inline Vector3 Zero() const { return Vector3(0, 0, 0); }
+	inline static Vector3 Zero() { return Vector3(0, 0, 0); }
 
 	inline bool operator ==(const Vector3& o) const { return SlitherMathLibrary::fequal(this->x, o.x) && SlitherMathLibrary::fequal(this->y, o.y) && SlitherMathLibrary::fequal(this->z, o.z); }
 	inline bool operator !=(const Vector3& o) const { return !SlitherMathLibrary::fequal(this->x, o.x) || !SlitherMathLibrary::fequal(this->y, o.y) || !SlitherMathLibrary::fequal(this->z, o.z); }

@@ -4,6 +4,7 @@
 
 BaseScene::BaseScene(std::string sceneName)
 {
+	m_SceneName = sceneName;
 }
 
 BaseScene::~BaseScene()

@@ -515,9 +515,9 @@ void FbxLoader::ExportMesh(
 
 	if (fileOut)
 	{
-		uint32_t vertexSize = outVertexVector.size();
-		uint32_t indexSize = outIndexVector.size();
-		uint32_t materialSize = outMaterial.size();
+		uint32_t vertexSize = (uint32_t)outVertexVector.size();
+		uint32_t indexSize = (uint32_t)outIndexVector.size();
+		uint32_t materialSize = (uint32_t)outMaterial.size();
 
 		fileOut << "VertexSize " << vertexSize << "\n";
 		fileOut << "IndexSize " << indexSize << "\n";

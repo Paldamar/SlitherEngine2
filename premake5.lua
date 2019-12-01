@@ -1,3 +1,4 @@
+
 ------------------------------------------------ Solution
 workspace "Game"
     configurations  { "Debug", "Release" }
@@ -34,7 +35,6 @@ project "MainGame"
 
     includedirs {
 		"Libraries/FBX_SDK/include",
-		"Libraries/JsonCpp",
 		"Engine/SlitherEngine",
 		"Engine/Math",
 		"Engine/SubSystem",
@@ -55,7 +55,7 @@ project "MainGame"
         "Game/MainGame/**.h",
         "premake5.lua",
         "GenerateBuildFiles.bat",
-        ".gitignore"
+        --".gitignore",
     }
 
 	vpaths {
@@ -63,7 +63,7 @@ project "MainGame"
         [""] = {
 			"premake5.lua",
 			"GenerateBuildFiles.bat",
-			".gitignore"
+			".gitignore",
 		},
 	}
 
@@ -73,7 +73,15 @@ project "MainGame"
 		"DirectX",
 		"SubSystem",
 		"ECS",
-		"PhsyX"		
+		"PhsyX",
+		"Libraries/PhysX/PhysX_64.lib",
+		"Libraries/PhysX/PhysXCharacterKinematic_static_64.lib",
+		"Libraries/PhysX/PhysXCommon_64.lib",
+		"Libraries/PhysX/PhysXCooking_64.lib",
+		"Libraries/PhysX/PhysXExtensions_static_64.lib",
+		"Libraries/PhysX/PhysXFoundation_64.lib",
+		"Libraries/PhysX/PhysXPvdSDK_static_64.lib",
+		"Libraries/PhysX/PhysXVehicle_static_64.lib",	
     }
 
     filter "configurations:Debug"
@@ -101,7 +109,6 @@ project "SlitherEngine"
 
     includedirs {
 		"Libraries/FBX_SDK/include",
-		"Libraries/JsonCpp",
 		"Engine/Math",
 		"Engine/SubSystem",
 		"Engine/World",
@@ -118,7 +125,7 @@ project "SlitherEngine"
 
     files {
         "Engine/SlitherEngine/**.cpp",
-        "Engine/SlitherEngine/**.h"
+        "Engine/SlitherEngine/**.h",
     }
 	
     links {
@@ -186,9 +193,8 @@ project "DirectX"
 
     includedirs {
 		"Libraries/FBX_SDK/include",
-		"Libraries/JsonCpp",
 		"Math",
-		"EngineMacros"		
+		"EngineMacros"
     }
 
     files {
@@ -206,7 +212,7 @@ project "DirectX"
 ------------------------------------------------ Subsystem Project
 project "SubSystem"
     location    "build"
-	dependson   { "DirectX", "Events", "XAudio", "World", "EngineMacros", "Timers", "PhsyX" }
+	dependson   { "DirectX", "Events", "XAudio", "World", "EngineMacros", "Timers" }
     kind        "StaticLib"
     language    "C++"
     pchheader   "SubsystemPCH.h"
@@ -214,7 +220,6 @@ project "SubSystem"
 
     includedirs {
 		"Libraries/FBX_SDK/include",
-		"Libraries/JsonCpp",
 		"DirectX",
 		"Events",
 		"XAudio",
@@ -225,7 +230,7 @@ project "SubSystem"
 
     files {
         "Engine/Subsystem/**.cpp",
-        "Engine/Subsystem/**.h"
+        "Engine/Subsystem/**.h",
     }
 	
 	links {
@@ -241,32 +246,23 @@ project "SubSystem"
 ------------------------------------------------ ECS Project
 project "ECS"
     location    "build"
-	dependson   {"DirectX", "Events", "XAudio", "World", "EngineMacros", "Timers", "Math", "PhsyX"}
+	dependson   {"EngineMacros"}
     kind        "StaticLib"
     language    "C++"
     pchheader   "ECSPCH.h"
     pchsource   "Engine/ECS/ECSPCH.cpp"
 
-    includedirs {		
-		"Libraries/FBX_SDK/include",
-		"Libraries/JsonCpp",
-		"DirectX",
-		"Events",
-		"XAudio",
-		"World",
-		"EngineMacros",
-		"Timers"
+    includedirs {
+		"EngineMacros"
     }
 
     files {
         "Engine/ECS/**.cpp",
-        "Engine/ECS/**.h"
+        "Engine/ECS/**.h",
     }
 	
 	links {
         "Math",
-		"XAudio",
-		"PhsyX",
 		"EngineMacros"
     }
 
@@ -283,13 +279,12 @@ project "XAudio"
     pchsource   "Engine/XAudio/XAudioPCH.cpp"
 
     includedirs {
-		"Libraries/JsonCpp",
 		"EngineMacros"
     }
 
     files {
         "Engine/XAudio/**.cpp",
-        "Engine/XAudio/**.h"
+        "Engine/XAudio/**.h",
     }
 	
 	links {
@@ -311,7 +306,6 @@ project "World"
 
     includedirs {
 		"Libraries/FBX_SDK/include",
-		"Libraries/JsonCpp",
 		"Engine/Math",
 		"Engine/XAudio",
 		"Engine/EngineMacros"
@@ -319,7 +313,7 @@ project "World"
 
     files {
         "Engine/World/**.cpp",
-        "Engine/World/**.h"
+        "Engine/World/**.h",
     }
 	
 	links {
@@ -340,7 +334,6 @@ project "PhsyX"
     pchsource   "Engine/PhsyX/PhsyXPCH.cpp"
 
     includedirs {
-		"Libraries/JsonCpp",
 		"Engine/EngineMacros",
 		"Engine/Math",
 		"Engine/Subsystem",
@@ -353,7 +346,7 @@ project "PhsyX"
 
     files {
         "Engine/PhsyX/**.cpp",
-        "Engine/PhsyX/**.h"
+        "Engine/PhsyX/**.h",
     }
 	
 	links {
@@ -393,7 +386,7 @@ project "Events"
 
     files {
         "Engine/Events/**.cpp",
-        "Engine/Events/**.h"
+        "Engine/Events/**.h",
     }
 	
 	links {
@@ -416,7 +409,7 @@ project "EngineMacros"
 
     files {
         "Engine/EngineMacros/**.cpp",
-        "Engine/EngineMacros/**.h"
+        "Engine/EngineMacros/**.h",
     }
 	
 	links {
@@ -440,7 +433,7 @@ project "Timers"
 
     files {
         "Engine/Timers/**.cpp",
-        "Engine/Timers/**.h"
+        "Engine/Timers/**.h",
     }
 	
 	links {
