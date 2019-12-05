@@ -17,6 +17,12 @@ physx::PxTransform PhsyXSubSystem::PxTransformFromMatrix(MyMatrix matrix)
 	return physx::PxTransform();
 }
 
+MyMatrix PhsyXSubSystem::MatrixFromPxTransform(physx::PxTransform transform)
+{
+
+}
+
+
 PxVec3 PhsyXSubSystem::PxVec3FromVec3(Vector3 vector)
 {
 	return PxVec3(vector.x, vector.y, vector.z);

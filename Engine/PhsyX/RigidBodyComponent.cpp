@@ -72,19 +72,6 @@ void RigidBodyComponent::Init(PhysXWorld* world, ColliderShape shapeType, Vector
 
 void RigidBodyComponent::Draw()
 {
-	int a = 0;
-	/*if (m_PhysxRigidDynamic)
-	{
-		PxTransform transform = m_PhysxRigidDynamic->getGlobalPose();
-		PxVec3 position = transform.p;
-		OutputMessage("RigidBodyPosition(Dynamic) x: %f, y: %f, z: %f", transform.p.x, transform.p.y, transform.p.z);
-	}
-	else if (m_PhysxRigidStatic)
-	{
-		PxTransform transform = m_PhysxRigidStatic->getGlobalPose();
-		PxVec3 position = transform.p;
-		OutputMessage("RigidBodyPosition(Static) x: %f, y: %f, z: %f", transform.p.x, transform.p.y, transform.p.z);
-	}*/
 }
 
 void RigidBodyComponent::Update(float deltaTime)

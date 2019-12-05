@@ -4,13 +4,34 @@
 class Transform3D
 {
 public:
-	Vector3 location;
+	/*Vector3 location;
 	Vector3 rotation;
-	Vector3 scale;
+	Vector3 scale;*/
+
+	MyMatrix matrix;
 
 public:
 	Transform3D() {}
-	Transform3D(Vector3 loc) { location = loc; rotation = Vector3(0,0,0), scale = Vector3(0,0,0); }
+
+	Transform3D(Vector3 loc) { matrix.CreateTranslation(loc); }
+	Transform3D(Vector3 loc, Vector3 rot, Vector3 scale) { matrix.CreateSRT(scale, rot, loc); }
+	Transform3D(const Transform3D& newTransform) { matrix = newTransform.matrix; }
+
+	inline void SetLocation(Vector3 newLoc) { matrix.SetTranslation(newLoc); }
+	inline void SetRotation(Vector3 eulerAngles)
+	{
+		Vector3 scale = matrix.GetScale();
+		Vector3 translation = matrix.GetTranslation();
+		matrix.CreateSRT(scale, eulerAngles, translation);
+	}
+	inline SetScale(Vector3 scale)
+	{
+		Vector3 translation = matrix.GetTranslation();
+		Vector3 rotation = matrix.GetEulerAngles();
+		matrix.CreateSRT(scale, rotation, translation);
+	}
+
+	/*Transform3D(Vector3 loc) { location = loc; rotation = Vector3(0,0,0), scale = Vector3(0,0,0); }
 	Transform3D(Vector3 loc, Vector3 rot, Vector3 nscale) { location = loc; rotation = rot; scale = nscale; }
 	Transform3D(const Transform3D& ntransform) { location = ntransform.location; rotation = ntransform.rotation; scale = ntransform.scale; }
 
@@ -34,6 +55,6 @@ public:
 	inline Transform3D operator +(const Transform3D o) { return Transform3D(this->location + o.location, this->rotation + o.rotation, this->scale + o.scale); }
 	inline Transform3D operator -(const Transform3D o) { return Transform3D(this->location - o.location, this->rotation - o.rotation, this->scale - o.scale); }
 
-	Vector3& operator[] (int i) { assert(i >= 0 && i < 3); return *(&location + i); }
+	Vector3& operator[] (int i) { assert(i >= 0 && i < 3); return *(&location + i); }*/
 };
 

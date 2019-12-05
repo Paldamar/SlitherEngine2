@@ -10,6 +10,7 @@ public:
 	virtual ~PhsyXSubSystem();
 
 	static PxTransform PxTransformFromMatrix(MyMatrix matrix);
+	static MyMatrix MatrixFromPxTransform(PxTransform transform);
 
 	static PxVec3 PxVec3FromVec3(Vector3 vector);
 	static Vector3 Vec3FromPxVec3(PxVec3 vec3);
