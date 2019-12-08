@@ -9,10 +9,16 @@ WorldsSubSystem::WorldsSubSystem(std::string systemName, Framework* engineInstan
 
 WorldsSubSystem::~WorldsSubSystem()
 {
+	std::vector<std::string> worldNames;
 	for (auto world : m_Worlds)
 	{
-		SafeDelete(world.second);
-		m_Worlds.erase(world.first);
+		worldNames.push_back(world.second->GetMapName());
+	}
+
+	for (unsigned int i = 0; i < m_Worlds.size(); i++)
+	{
+		SafeDelete(m_Worlds.at(worldNames[i]));
+		/*m_Worlds.erase(m_Worlds.at(i));*/
 	}
 	m_Worlds.clear();
 }

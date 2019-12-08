@@ -40,9 +40,15 @@ bool SlitherWorld::DoesSceneExist(std::string sceneName)
 
 void SlitherWorld::Update(float deltaTime)
 {
-	for (auto Scene : m_SceneMap)
+	std::vector<std::string> sceneNames;
+	for (auto scene : m_SceneMap)
 	{
-		Scene.second->Update(deltaTime);
+		sceneNames.push_back(scene.second->GetSceneName());
+	}
+
+	for (unsigned int i = 0; i < m_SceneMap.size(); i++)
+	{
+		m_SceneMap.at(sceneNames[i])->Update(deltaTime);
 	}
 }
 
