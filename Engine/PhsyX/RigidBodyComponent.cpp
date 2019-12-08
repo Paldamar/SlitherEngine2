@@ -14,7 +14,7 @@ RigidBodyComponent::~RigidBodyComponent()
 
 }
 
-void RigidBodyComponent::Init(PhysXWorld* world, ColliderShape shapeType, Vector3 position, Vector3 eulerRotation, bool isStatic)
+void RigidBodyComponent::Init(PhysXWorld* world, ColliderShape shapeType, Vector3 position, Vector3 eulerRotation, bool isStatic, Vector3 shapeDetails)
 {
 	ColliderComponent* newCollider = nullptr;
 	switch (shapeType)
@@ -28,7 +28,7 @@ void RigidBodyComponent::Init(PhysXWorld* world, ColliderShape shapeType, Vector
 		case ColliderShape::BoxCollider:
 		{
 			newCollider = CreateComponent<BoxColliderComponent>(ColliderShapeNames[(int)shapeType], GetOwner());
-			newCollider->Init(world, this, Vector3(10.0f, 10.0f, 10.0f), Vector3::Zero());
+			newCollider->Init(world, this, shapeDetails, Vector3::Zero());
 			break;
 		}
 	}

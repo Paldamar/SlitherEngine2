@@ -51,11 +51,11 @@ void MainGame::LoadContent()
 		// By default, all objects you spawn with "SpawnObject" will go into the "Main Scene" (We do not need to then call 'AddObjectToScene')
 		BaseGameObject* dynamicObject = m_World->SpawnObject<BaseGameObject>("DynamicObject");
 		RigidBodyComponent* rigidBody = dynamicObject->CreateComponent<RigidBodyComponent>("RigidBody");
-		rigidBody->Init(physXWorld, ColliderShape::BoxCollider, Vector3(0.0f, 5.0f, 0.0f), Vector3::Zero(), false);
+		rigidBody->Init(physXWorld, ColliderShape::BoxCollider, Vector3(0.0f, 5.0f, 0.0f), Vector3::Zero(), false, Vector3(10.0f, 10.0f, 10.0f));
 
 		BaseGameObject* staticObject = m_World->SpawnObject<BaseGameObject>("StaticObject");
 		RigidBodyComponent* staticRigidBody = staticObject->CreateComponent<RigidBodyComponent>("RigidBody");
-		staticRigidBody->Init(physXWorld, ColliderShape::BoxCollider, Vector3(0.0f, -20.0f, 0.0f), Vector3::Zero(), true);
+		staticRigidBody->Init(physXWorld, ColliderShape::BoxCollider, Vector3(0.0f, -20.0f, 0.0f), Vector3::Zero(), true, Vector3(10.0f, 10.0f, 10.0f));
 	}
 	
 }
