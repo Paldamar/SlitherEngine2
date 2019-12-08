@@ -8,17 +8,17 @@ GameCore::GameCore(Framework* frameWork) : m_Framework(frameWork)
 
 	m_Framework = frameWork;
 	m_Framework->m_GameCore = this;
+
+	m_World = nullptr;
 }
 
 GameCore::~GameCore()
 {
 	SafeDelete(m_SubSystemManager);
-	SafeDelete(m_World);
 }
 
 void GameCore::LoadContent()
 {
-	m_World = new SlitherWorld("MainWorld");
 }
 
 void GameCore::OnSurfaceChanged(unsigned int width, unsigned int height)
@@ -31,7 +31,6 @@ void GameCore::OnEvent(Event* event)
 
 void GameCore::Update(float deltaTime)
 {
-	m_World->Update(deltaTime);
 }
 
 void GameCore::Draw()

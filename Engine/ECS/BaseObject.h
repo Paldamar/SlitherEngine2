@@ -39,7 +39,7 @@ public:
 	BaseComponent* GetComponentByName(std::string name);
 
 	inline virtual Transform3D GetTransform() { return m_Transform; }
-	inline virtual Transform2D Get2DTransform() { return m_Transform.TwoDimensional(); }
+	//inline virtual Transform2D Get2DTransform() { return m_Transform.TwoDimensional(); }
 	inline virtual void SetTransform(Transform3D newTransform) { m_Transform = newTransform; UpdateAttachedObjects(); }
 
 	// Make a transform with just a position.
@@ -47,11 +47,11 @@ public:
 	// Make a transform with a position, rotation, and scale.
 	inline virtual void SetTransform(Vector3 pos, Vector3 rot, Vector3 scal) { m_Transform = Transform3D(pos, rot, scal); }
 	// Get Object's position.
-	inline virtual Vector3 GetObjectLocation() const { return m_Transform.location; }
+	inline virtual Vector3 GetObjectLocation() { return m_Transform.matrix.GetTranslation(); }
 	// Get Object's rotation.
-	inline virtual Vector3 GetObjectRotation() const { return m_Transform.rotation; }
+	inline virtual Vector3 GetObjectRotation() { return m_Transform.matrix.GetEulerAngles(); }
 	// Get Object's scale.
-	inline virtual Vector3 GetObjectScale() const { return m_Transform.scale; }
+	inline virtual Vector3 GetObjectScale() { return m_Transform.matrix.GetScale(); }
 	// Set Object's position.
 	inline virtual void SetObjectLocation(Vector3 pos) { m_Transform.SetLocation(pos); UpdateAttachedObjects();	}
 	// Set Object's rotation.

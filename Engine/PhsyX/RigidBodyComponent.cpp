@@ -79,11 +79,11 @@ void RigidBodyComponent::Update(float deltaTime)
 	if (m_PhysxRigidDynamic)
 	{
 		PxTransform transform = m_PhysxRigidDynamic->getGlobalPose();
-		GetOwner()->SetObjectLocation(PhsyXSubSystem::Vec3LocationFromPxTransform(transform));
+		GetOwner()->SetTransform(PhsyXSubSystem::TransformFromPxTransform(transform));
 	}
 	else if (m_PhysxRigidStatic)
 	{
 		PxTransform transform = m_PhysxRigidStatic->getGlobalPose();
-		GetOwner()->SetObjectLocation(PhsyXSubSystem::Vec3LocationFromPxTransform(transform));
+		GetOwner()->SetTransform(PhsyXSubSystem::TransformFromPxTransform(transform));
 	}
 }

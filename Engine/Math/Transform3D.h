@@ -16,6 +16,7 @@ public:
 	Transform3D(Vector3 loc) { matrix.CreateTranslation(loc); }
 	Transform3D(Vector3 loc, Vector3 rot, Vector3 scale) { matrix.CreateSRT(scale, rot, loc); }
 	Transform3D(const Transform3D& newTransform) { matrix = newTransform.matrix; }
+	Transform3D(MyMatrix newMatrix) { matrix = newMatrix; }
 
 	inline void SetLocation(Vector3 newLoc) { matrix.SetTranslation(newLoc); }
 	inline void SetRotation(Vector3 eulerAngles)
@@ -24,12 +25,14 @@ public:
 		Vector3 translation = matrix.GetTranslation();
 		matrix.CreateSRT(scale, eulerAngles, translation);
 	}
-	inline SetScale(Vector3 scale)
+	inline void SetScale(Vector3 scale)
 	{
 		Vector3 translation = matrix.GetTranslation();
 		Vector3 rotation = matrix.GetEulerAngles();
 		matrix.CreateSRT(scale, rotation, translation);
 	}
+	
+	inline Transform3D operator +(const Transform3D o) { return Transform3D(this->matrix * o.matrix); }
 
 	/*Transform3D(Vector3 loc) { location = loc; rotation = Vector3(0,0,0), scale = Vector3(0,0,0); }
 	Transform3D(Vector3 loc, Vector3 rot, Vector3 nscale) { location = loc; rotation = rot; scale = nscale; }

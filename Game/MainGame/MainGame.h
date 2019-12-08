@@ -22,6 +22,5 @@ public:
 	virtual void Update(float deltaTime) override;
 
 protected:
-	PhysXWorld* m_physicsWorld = nullptr;
 	MainGameContactReportCallback m_ContactCallback;
 };
