@@ -4,12 +4,15 @@ workspace "Game"
     configurations  { "Debug", "Release" }
     location        "build"
     startproject    "MainGame"
+	architecture "x64"
 
 	staticruntime "on"
 
     filter "system:windows"
         platforms       { "x64" }
         --characterset    "MBCS"
+
+	cppdialect		"C++17"
 
 	vpaths {
         -- Place these files in the root of the project.
@@ -26,7 +29,7 @@ workspace "Game"
 ------------------------------------------------ Game Project
 project "MainGame"
     location    "build"
-    dependson   { "SlitherEngine", "Math", "SubSystem", "World", "DirectX", "ECS","XAudio", "PhsyX", "EngineMacros" }
+    dependson   { "SlitherEngine", "Math", "SubSystem", "World", "DirectX", "ECS","XAudio", "PhsyX", "EngineMacros", "Vulkan" }
     kind        "WindowedApp"
     language    "C++"
     debugdir    "."
@@ -47,7 +50,10 @@ project "MainGame"
 		"Libraries/PhysX/pxshared/include",
 		"Libraries/PhysX/physx/include",
 		"Libraries/PhysX/physx/source/foundation/include",
-		"Libraries/PhysX/physx/source/common/src"
+		"Libraries/PhysX/physx/source/common/src",
+		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Include",
+		"Libraries/glfw-3.3.bin.WIN64/include",
+		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019"
     }
 
     files {
@@ -74,6 +80,7 @@ project "MainGame"
 		"SubSystem",
 		"ECS",
 		"PhsyX",
+		"Vulkan",
 		"Libraries/PhysX/PhysX_64.lib",
 		"Libraries/PhysX/PhysXCharacterKinematic_static_64.lib",
 		"Libraries/PhysX/PhysXCommon_64.lib",
@@ -82,7 +89,17 @@ project "MainGame"
 		"Libraries/PhysX/PhysXFoundation_64.lib",
 		"Libraries/PhysX/PhysXPvdSDK_static_64.lib",
 		"Libraries/PhysX/PhysXVehicle_static_64.lib",	
+		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/shaderc_combined.lib",
+		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/VkLayer_utils.lib",
+		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/vulkan-1.lib",
+		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3.lib",
+		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3dll.lib"
     }
+
+		linkoptions {
+		"/ignore:4099",
+		"/ignore:4217"
+	}
 
     filter "configurations:Debug"
         defines         "_DEBUG"
@@ -101,7 +118,7 @@ project "MainGame"
 ------------------------------------------------ SlitherEngine Project
 project "SlitherEngine"
     location    "build"
-    dependson   { "Math", "DirectX","SubSystem","XAudio", "EngineMacros" }
+    dependson   { "Math", "DirectX","SubSystem","XAudio", "EngineMacros", "Vulkan" }
     kind        "StaticLib"
     language    "C++"
     pchheader   "SlitherEnginePCH.h"
@@ -120,7 +137,9 @@ project "SlitherEngine"
 		"Libraries/PhysX/pxshared/include",
 		"Libraries/PhysX/physx/include",
 		"Libraries/PhysX/physx/source/foundation/include",
-		"Libraries/PhysX/physx/source/common/src"
+		"Libraries/PhysX/physx/source/common/src",
+		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Include",
+		"Libraries/glfw-3.3.bin.WIN64/include"
     }
 
     files {
@@ -134,7 +153,13 @@ project "SlitherEngine"
 		"SubSystem",
 		"XAudio",
 		"ECS",
-		"PhsyX"
+		"PhsyX",
+		"Vulkan",
+		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/shaderc_combined.lib",
+		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/VkLayer_utils.lib",
+		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/vulkan-1.lib",
+		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3.lib",
+		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3dll.lib"
     }
 
     filter "configurations:Debug"
@@ -212,7 +237,7 @@ project "DirectX"
 ------------------------------------------------ Subsystem Project
 project "SubSystem"
     location    "build"
-	dependson   { "DirectX", "Events", "XAudio", "World", "EngineMacros", "Timers" }
+	dependson   { "DirectX", "Events", "XAudio", "World", "EngineMacros", "Timers", "Vulkan" }
     kind        "StaticLib"
     language    "C++"
     pchheader   "SubsystemPCH.h"
@@ -225,7 +250,11 @@ project "SubSystem"
 		"XAudio",
 		"World",
 		"EngineMacros",
-		"Timers"
+		"Timers",
+		"Vulkan",
+		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Include",
+		"Libraries/glfw-3.3.bin.WIN64/include",
+		
     }
 
     files {
@@ -237,7 +266,13 @@ project "SubSystem"
         "Math",
 		"Events",
 		"Timers",
-		"World"
+		"World",
+		"Vulkan",
+		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/shaderc_combined.lib",
+		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/VkLayer_utils.lib",
+		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/vulkan-1.lib",
+		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3.lib",
+		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3dll.lib"
     }
 
     filter "configurations:Debug"
@@ -445,22 +480,32 @@ project "Timers"
 		------------------------------------------------ Vulkan Project
 project "Vulkan"
     location    "build"
-	dependson   {"EngineMacros"}
+	dependson   {"EngineMacro", "ECS", "Math"}
     kind        "StaticLib"
     language    "C++"
+	--cppdialect		"C++17"
     pchheader   "VulkanPCH.h"
-    pchsource   "Engine/Timers/VulkanPCH.cpp"
+    pchsource   "Engine/Vulkan/VulkanPCH.cpp"
 
     includedirs {
-		"Engine/EngineMacros"
+		"Engine/EngineMacros",
+		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Include",
+		"Libraries/glfw-3.3.bin.WIN64/include",
+		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019"
+
     }
 
     files {
-        "Engine/VUlkan/**.cpp",
-        "Engine/VUlkan/**.h",
+        "Engine/Vulkan/**.cpp",
+        "Engine/Vulkan/**.h",
     }
 	
 	links {
+		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/shaderc_combined.lib",
+		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/VkLayer_utils.lib",
+		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/vulkan-1.lib",
+		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3.lib",
+		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3dll.lib"
     }
 
     filter "configurations:Debug"

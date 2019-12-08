@@ -52,8 +52,8 @@ void Framework::Init(int width, int height, HINSTANCE hInstance)
 
 	m_WindowIsActive = true;
 
-	RenderingSubSystem* directXSystem = 
-		GetGameCore()->GetSubSystemManager()->CreateSubSystem<RenderingSubSystem>("DirectX", SubSystemID::DXSystem);
+	/*RenderingSubSystem* directXSystem = 
+		GetGameCore()->GetSubSystemManager()->CreateSubSystem<RenderingSubSystem>("DirectX", SubSystemID::DirectXSystem);*/
 
 	TimerSubSystem* timerSystem =
 		GetGameCore()->GetSubSystemManager()->CreateSubSystem<TimerSubSystem>("TimerSystem", SubSystemID::Timers);	
@@ -61,12 +61,20 @@ void Framework::Init(int width, int height, HINSTANCE hInstance)
 	WorldsSubSystem* worldSystem =
 		GetGameCore()->GetSubSystemManager()->CreateSubSystem<WorldsSubSystem>("WorldSystem", SubSystemID::World);
 
-	if (directXSystem)
+	/*if (directXSystem)
 	{
 		directXSystem->SetCallBack(Framework::WndProc);
 		directXSystem->SetAppInst(hInstance);
 		directXSystem->Init();
-	}	
+	}	*/
+
+	VulkanSubsystem* vulkanSystem =
+		GetGameCore()->GetSubSystemManager()->CreateSubSystem<VulkanSubsystem>("VulkanSystem", SubSystemID::VulkanSystem);
+
+	if (vulkanSystem)
+	{
+		vulkanSystem->Init();
+	}
 }
 
 int Framework::Run(GameCore* pGameCore)

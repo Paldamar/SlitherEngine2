@@ -26,6 +26,7 @@
 #include "../XAudio/XAudioPCH.h"
 #include "../Events/EventsPCH.h"
 #include "../Subsystem/SubsystemPCH.h"
+#include "../Vulkan/VulkanPCH.h"
 
 
 #include "Framework.h"

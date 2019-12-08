@@ -11,15 +11,13 @@ RenderingSubSystem::~RenderingSubSystem()
 
 void RenderingSubSystem::Init()
 {
-	Renderer::Initialize(m_Callback);
+	FBXRenderer::Initialize(m_Callback);
 }
 
 void RenderingSubSystem::Update(float deltaTime)
 {
-//Renderer::Update()
 }
 
 void RenderingSubSystem::Draw()
 {
-//	m_Renderer->Draw();
 }
