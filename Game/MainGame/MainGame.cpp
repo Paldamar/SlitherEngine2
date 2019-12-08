@@ -2,6 +2,7 @@
 #include "PhsyXPCH.h"
 #include "MainGame.h"
 #include "PhsyXSubSystem.h"
+#include "PhysXWorld.h"
 #include "RigidBodyComponent.h"
 #include "BoxCollider.h"
 
@@ -25,7 +26,7 @@ void MainGame::LoadContent()
 	if (physXSub)
 	{
 		physXWorld = physXSub->CreateWorld("Test");
-		physXWorld->Init(&m_ContactCallback);
+		physXWorld->Init();
 	}
 
 	/*BaseScene* mainGameScene = m_World->GetScene("Main Scene");

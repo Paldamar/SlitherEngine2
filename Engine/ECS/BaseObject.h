@@ -27,8 +27,8 @@ public:
 
 	virtual bool ObjectHasTag(std::string Tag);
 
-	virtual void OnCollisionEnter() {}
-	virtual void OnCollisionExit() {}
+	virtual void OnCollisionEnter(BaseObject* otherObject, Vector3 location, Vector3 impulse);
+	virtual void OnCollisionExit(BaseObject* otherObject, Vector3 location, Vector3 impulse);
 
 	inline virtual void SetOwner(BaseObject* newOwner) { m_Owner = newOwner; }
 

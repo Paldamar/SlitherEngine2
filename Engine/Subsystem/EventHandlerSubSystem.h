@@ -1,6 +1,7 @@
 #pragma once
+#include "SlitherSubSystem.h"
+#include <queue>
 
-class SlitherSubSystem;
 class Event;
 class GameCore;
 

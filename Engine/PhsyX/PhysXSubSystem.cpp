@@ -28,7 +28,7 @@ PhysXWorld* PhsyXSubSystem::CreateWorld(std::string worldName)
 {
 	assert(m_PhysXWorlds.find(worldName) == m_PhysXWorlds.end());
 
-	return m_PhysXWorlds[worldName] = new PhysXWorld();
+	return m_PhysXWorlds[worldName] = new PhysXWorld(this);
 }
 
 PhysXWorld* PhsyXSubSystem::GetWorld(std::string worldName)
