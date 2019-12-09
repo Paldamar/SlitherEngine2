@@ -11,8 +11,14 @@ VulkanSubsystem::~VulkanSubsystem()
 {
 }
 
+void VulkanSubsystem::Cleanup()
+{
+	VulkanRenderer::CleanUp();
+}
+
 void VulkanSubsystem::Init()
 {
+	VulkanRenderer::InitWindow();
 	VulkanRenderer::InitVulkan();
 }
 
@@ -22,4 +28,5 @@ void VulkanSubsystem::Update(float deltaTime)
 
 void VulkanSubsystem::Draw()
 {
+	VulkanRenderer::DrawFrame();
 }

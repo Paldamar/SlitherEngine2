@@ -98,6 +98,8 @@ int Framework::Run(GameCore* pGameCore)
 		reinterpret_cast<EventHandlerSubSystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByType(EventSystem));
 	WorldsSubSystem* worldSystem =
 		reinterpret_cast<WorldsSubSystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByType(SubSystemID::World));
+	VulkanSubsystem* vulkanSystem =
+		reinterpret_cast<VulkanSubsystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByType(SubSystemID::VulkanSystem));
 	// ---------------------------------
 
 	if (CALL_OBJECT_CLEANUP_BY_TIMER)
@@ -112,6 +114,14 @@ int Framework::Run(GameCore* pGameCore)
 	OutputMessage("Framework : Starting Gameloop \n");
 	while (!done)
 	{
+		GLFWwindow* window = vulkanSystem->GetWindow();
+		if (!glfwWindowShouldClose(window))
+		{
+			vulkanSystem->Draw();
+
+			glfwSwapBuffers(window);
+			glfwPollEvents();
+		}
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 		{
 			if (msg.message == WM_QUIT || msg.message == WM_CLOSE || msg.message == WM_DESTROY)
@@ -309,7 +319,12 @@ LRESULT Framework::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		case WM_CLOSE:
 			{
 				PostQuitMessage(0);
-				SlitherFramework->m_CloseProgramRequested = true;
+				SlitherFramework->m_CloseProgramRequested = true;		
+				VulkanSubsystem* vulkan = reinterpret_cast<VulkanSubsystem*>(SlitherFramework->GetGameCore()->GetSubSystemManager()->GetSubSystemByType(SubSystemID::VulkanSystem));
+				if (vulkan)
+				{
+					vulkan->Cleanup();
+				}
 				OutputMessage("Framework : Close Program Requested \n");
 			}
 			return 0;

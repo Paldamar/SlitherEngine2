@@ -73,14 +73,18 @@ project "MainGame"
 		},
 	}
 
+	libdirs {
+		"%(AdditionalLibraryDirectories)"
+	}
+
     links {
         "SlitherEngine",
         "Math",
 		"DirectX",
+		"Vulkan",
 		"SubSystem",
 		"ECS",
 		"PhsyX",
-		"Vulkan",
 		"Libraries/PhysX/PhysX_64.lib",
 		"Libraries/PhysX/PhysXCharacterKinematic_static_64.lib",
 		"Libraries/PhysX/PhysXCommon_64.lib",
@@ -92,7 +96,7 @@ project "MainGame"
 		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/shaderc_combined.lib",
 		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/VkLayer_utils.lib",
 		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/vulkan-1.lib",
-		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3.lib",
+		--"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3.lib",
 		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3dll.lib"
     }
 
@@ -158,7 +162,7 @@ project "SlitherEngine"
 		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/shaderc_combined.lib",
 		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/VkLayer_utils.lib",
 		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/vulkan-1.lib",
-		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3.lib",
+		--"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3.lib",
 		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3dll.lib"
     }
 
@@ -477,13 +481,13 @@ project "Timers"
     filter "configurations:Debug"
         defines { "DEBUG" }
         symbols "On"
-		------------------------------------------------ Vulkan Project
+		
+------------------------------------------------ Vulkan Project
 project "Vulkan"
     location    "build"
 	dependson   {"EngineMacro", "ECS", "Math"}
     kind        "StaticLib"
     language    "C++"
-	--cppdialect		"C++17"
     pchheader   "VulkanPCH.h"
     pchsource   "Engine/Vulkan/VulkanPCH.cpp"
 
@@ -499,15 +503,20 @@ project "Vulkan"
         "Engine/Vulkan/**.cpp",
         "Engine/Vulkan/**.h",
     }
+
+	libdirs {
+		"%(AdditionalLibraryDirectories)"
+	}
 	
 	links {
 		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/shaderc_combined.lib",
 		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/VkLayer_utils.lib",
 		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/vulkan-1.lib",
-		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3.lib",
-		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3dll.lib"
-    }
+		--"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3.lib",
+		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3dll.lib",
+		}
 
     filter "configurations:Debug"
         defines { "DEBUG" }
         symbols "On"
+

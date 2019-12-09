@@ -4,6 +4,7 @@
 
 const int WIDTH = 800;
 const int HEIGHT = 600;
+const int MAX_FRAMES_IN_FLIGHT = 2;
 
 const std::vector<const char*> g_ValidationLayers = {
 	"VK_LAYER_KHRONOS_validation"
@@ -40,6 +41,10 @@ class VulkanRenderer {
 public:
 	void Run();
 
+	GLFWwindow* GetWindow() {
+		return m_Window;
+	};
+
 private:
 	friend class VulkanSubsystem;
 	GLFWwindow* m_Window;
@@ -55,8 +60,18 @@ private:
 	VkFormat m_SwapChainImageFormat;
 	VkExtent2D m_SwapChainExtent;
 	std::vector<VkImageView> m_SwapChainImageViews;
+	std::vector<VkFramebuffer> m_SwapChainFramebuffers;
 #pragma endregion
-
+	VkRenderPass m_RenderPass;
+	VkPipelineLayout m_PipelineLayout;
+	VkPipeline m_GraphicsPipeline;
+	VkCommandPool m_CommandPool;
+	std::vector<VkCommandBuffer> m_CommandBuffers;
+	std::vector<VkSemaphore> m_ImageAvailableSemaphores;
+	std::vector<VkSemaphore> m_RenderFinishedSemaphores;
+	std::vector<VkFence> m_InFlightFences;
+	std::vector<VkFence> m_ImagesInFlight;
+	size_t m_CurrentFrame = 0;
 
 	bool CheckValidationLayerSupport();
 
@@ -100,9 +115,26 @@ private:
 
 	void CreateGraphicsPipeline();
 
+	void CreateRenderPass();
+
+	void CreateFrameBuffers();
+
+	void CreateCommandPool();
+
+	void CreateCommandBuffers();
+
+	void CreateSyncObjects();
+
 	void MainLoop();
 
+	void DrawFrame();
+
 	void CleanUp();
+
+	static std::vector<char> ReadFile(const std::string& filename);
+
+	VkShaderModule CreateShaderModule(const std::vector<char>& code);
+
 
 	static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
 		VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,

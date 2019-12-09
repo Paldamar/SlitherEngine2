@@ -12,6 +12,8 @@ public:
 	VulkanSubsystem(std::string systemName, Framework* engineInstance, SubSystemID instanceID = NULLSystem);
 	~VulkanSubsystem();
 
+	void Cleanup();
+
 	virtual void Init() override;
 
 	virtual void Update(float deltaTime) override;
