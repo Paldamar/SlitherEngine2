@@ -79,6 +79,7 @@ void VulkanRenderer::InitVulkan()
 	CreateGraphicsPipeline();
 	CreateFrameBuffers();
 	CreateCommandPool();
+	CreateVertexBuffer();
 	CreateCommandBuffers();
 	CreateSyncObjects();
 }
@@ -435,19 +436,11 @@ void VulkanRenderer::CreateLogicalDevice()
 		queueCreateInfos.push_back(queueCreateInfo);
 	}
 
-	//queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-	//queueCreateInfo.queueFamilyIndex = indices.graphicsFamily.value();
-	//queueCreateInfo.queueCount = 1;
-
-	//float queuePriority = 1.0f;
-	//queueCreateInfo.pQueuePriorities = &queuePriority;
-
 	VkPhysicalDeviceFeatures deviceFeatures = {};
 
 	VkDeviceCreateInfo createInfo = {};
 	createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-	//createInfo.pQueueCreateInfos = &queueCreateInfo;
-	//createInfo.queueCreateInfoCount = 1;
+
 	createInfo.queueCreateInfoCount = static_cast<uint32_t>(queueCreateInfos.size());
 	createInfo.pQueueCreateInfos = queueCreateInfos.data();
 
@@ -507,10 +500,13 @@ void VulkanRenderer::CreateGraphicsPipeline()
 
 	VkPipelineVertexInputStateCreateInfo vertexInputInfo = {};
 	vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-	vertexInputInfo.vertexBindingDescriptionCount = 0;
-	vertexInputInfo.pVertexBindingDescriptions = nullptr; // Optional
-	vertexInputInfo.vertexAttributeDescriptionCount = 0;
-	vertexInputInfo.pVertexAttributeDescriptions = nullptr; // Optional
+	auto bindingDescription = VulkanVertex::GetBindingDescription();
+	auto attributeDescriptions = VulkanVertex::GetAttributeDescriptions();
+
+	vertexInputInfo.vertexBindingDescriptionCount = 1;
+	vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescriptions.size());
+	vertexInputInfo.pVertexBindingDescriptions = &bindingDescription;
+	vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions.data();
 
 	VkPipelineInputAssemblyStateCreateInfo inputAssembly = {};
 	inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
@@ -761,11 +757,13 @@ void VulkanRenderer::CreateCommandBuffers()
 
 		vkCmdBeginRenderPass(m_CommandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
-		vkCmdBeginRenderPass(m_CommandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
-
 		vkCmdBindPipeline(m_CommandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, m_GraphicsPipeline);
 
-		vkCmdDraw(m_CommandBuffers[i], 3, 1, 0, 0);
+		VkBuffer vertexBuffers[] = { m_VertexBuffer };
+		VkDeviceSize offsets[] = { 0 };
+		vkCmdBindVertexBuffers(m_CommandBuffers[i], 0, 1, vertexBuffers, offsets);
+
+		vkCmdDraw(m_CommandBuffers[i], static_cast<uint32_t>(g_Vertices.size()), 1, 0, 0);
 
 		vkCmdEndRenderPass(m_CommandBuffers[i]);
 
@@ -799,6 +797,55 @@ void VulkanRenderer::CreateSyncObjects()
 			throw std::runtime_error("failed to create synchronization objects for a frame!");
 		}
 	}
+}
+
+void VulkanRenderer::CreateVertexBuffer()
+{
+	VkBufferCreateInfo bufferInfo = {};
+	bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+	bufferInfo.size = sizeof(g_Vertices[0]) * g_Vertices.size();
+	bufferInfo.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+	bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+	if (vkCreateBuffer(m_Device, &bufferInfo, nullptr, &m_VertexBuffer) != VK_SUCCESS) 
+	{
+		throw std::runtime_error("failed to create vertex buffer!");
+	}
+
+	VkMemoryRequirements memRequirements;
+	vkGetBufferMemoryRequirements(m_Device, m_VertexBuffer, &memRequirements);
+
+	VkMemoryAllocateInfo allocInfo = {};
+	allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+	allocInfo.allocationSize = memRequirements.size;
+	allocInfo.memoryTypeIndex = FindMemoryType(memRequirements.memoryTypeBits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+
+	if (vkAllocateMemory(m_Device, &allocInfo, nullptr, &m_VertexBufferMemory) != VK_SUCCESS) 
+	{
+		throw std::runtime_error("failed to allocate vertex buffer memory!");
+	}
+
+	vkBindBufferMemory(m_Device, m_VertexBuffer, m_VertexBufferMemory, 0);
+
+	void* data;
+	vkMapMemory(m_Device, m_VertexBufferMemory, 0, bufferInfo.size, 0, &data);
+	memcpy(data, g_Vertices.data(), (size_t)bufferInfo.size);
+	vkUnmapMemory(m_Device, m_VertexBufferMemory);
+}
+
+uint32_t VulkanRenderer::FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties)
+{
+	VkPhysicalDeviceMemoryProperties memProperties;
+	vkGetPhysicalDeviceMemoryProperties(m_PhysicalDevice, &memProperties);
+
+	for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++) 
+	{
+		if ((typeFilter & (1 << i)) && (memProperties.memoryTypes[i].propertyFlags & properties) == properties) {
+			return i;
+		}
+	}
+
+	throw std::runtime_error("failed to find suitable memory type!");
 }
 
 void VulkanRenderer::MainLoop()
@@ -862,6 +909,11 @@ void VulkanRenderer::DrawFrame()
 
 void VulkanRenderer::CleanUp()
 {
+	CleanUpSwapChain();
+
+	vkDestroyBuffer(m_Device, m_VertexBuffer, nullptr);
+	vkFreeMemory(m_Device, m_VertexBufferMemory, nullptr);
+
 	for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) 
 	{
 		vkDestroySemaphore(m_Device, m_RenderFinishedSemaphores[i], nullptr);
@@ -870,7 +922,22 @@ void VulkanRenderer::CleanUp()
 	}
 
 	vkDestroyCommandPool(m_Device, m_CommandPool, nullptr);
-	for (auto framebuffer : m_SwapChainFramebuffers) 
+	
+
+
+	vkDestroySurfaceKHR(m_Instance, m_Surface, nullptr);
+	vkDestroyInstance(m_Instance, nullptr);
+	vkDestroySwapchainKHR(m_Device, m_SwapChain, nullptr);
+	vkDestroyDevice(m_Device, nullptr);
+
+	glfwDestroyWindow(m_Window);
+
+	glfwTerminate();
+}
+
+void VulkanRenderer::CleanUpSwapChain()
+{
+	for (auto framebuffer : m_SwapChainFramebuffers)
 	{
 		vkDestroyFramebuffer(m_Device, framebuffer, nullptr);
 	}
@@ -884,14 +951,6 @@ void VulkanRenderer::CleanUp()
 		vkDestroyImageView(m_Device, imageView, nullptr);
 	}
 
-	vkDestroySurfaceKHR(m_Instance, m_Surface, nullptr);
-	vkDestroyInstance(m_Instance, nullptr);
-	vkDestroySwapchainKHR(m_Device, m_SwapChain, nullptr);
-	vkDestroyDevice(m_Device, nullptr);
-
-	glfwDestroyWindow(m_Window);
-
-	glfwTerminate();
 }
 
 std::vector<char> VulkanRenderer::ReadFile(const std::string& filename)
