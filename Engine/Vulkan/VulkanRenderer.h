@@ -80,10 +80,22 @@ struct VulkanVertex
 	}
 };
 
+struct UniformBufferObject
+{
+	MyMatrix model;
+	MyMatrix view;
+	MyMatrix proj;
+};
+
 const std::vector<VulkanVertex> g_Vertices = {
-	VulkanVertex(vec4(0.0f, -0.5f, 0.0f, 1.0f), vec4(1.0f, 0.0f, 0.0f, 1.0f)),
-	VulkanVertex(vec4(0.5f, 0.5f, 0.0f, 1.0f), vec4(0.0f, 1.0f, 0.0f, 1.0f)),
-	VulkanVertex(vec4(-0.5f, 0.5f, 0.0f, 1.0f), vec4(0.0f, 0.0f, 1.0f, 1.0f))
+	VulkanVertex(vec4(-0.5f, -0.5f, 0.0f, 1.0f), vec4(1.0f, 0.0f, 0.0f, 1.0f)),
+	VulkanVertex(vec4(0.5f, -0.5f, 0.0f, 1.0f), vec4(0.0f, 1.0f, 0.0f, 1.0f)),
+	VulkanVertex(vec4(0.5f, 0.5f, 0.0f, 1.0f), vec4(0.0f, 0.0f, 1.0f, 1.0f)),
+	VulkanVertex(vec4(-0.5f, 0.5f, 0.0f, 1.0f), vec4(1.0f, 1.0f, 1.0f, 1.0f))
+};
+
+const std::vector<uint16_t> g_Indices = {
+	0, 1, 2, 2, 3, 0
 };
 
 class VulkanRenderer {
@@ -127,10 +139,13 @@ private:
 	std::vector<VkFence> m_ImagesInFlight;
 	size_t m_CurrentFrame = 0;
 #pragma endregion
-#pragma region Buffers
+#pragma region Buffers&Indices
 	VkBuffer m_VertexBuffer;
 	VkDeviceMemory m_VertexBufferMemory;
+	VkBuffer m_IndexBuffer;
+	VkDeviceMemory m_IndexBufferMemory;
 #pragma endregion
+VkDescriptorSetLayout m_DescriptorSetLayout;
 
 	bool CheckValidationLayerSupport();
 
@@ -186,6 +201,14 @@ private:
 
 	void CreateVertexBuffer();
 
+	void CreateIndexBuffer();
+
+	void CreateBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);
+
+	void CreateDescriptorSetLayout();
+
+	void CopyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
+
 	uint32_t FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
 
 	void MainLoop();
@@ -201,7 +224,8 @@ private:
 	VkShaderModule CreateShaderModule(const std::vector<char>& code);
 
 
-	static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData) {
+	static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData) 
+	{
 		std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
 
 		return VK_FALSE;
