@@ -1,4 +1,5 @@
 #include "ECSPCH.h"
+#include "WindowsHelpers.h"
 #include "../World/WorldPCH.h"
 
 BaseObject::BaseObject()
@@ -40,6 +41,16 @@ bool BaseObject::ObjectHasTag(std::string Tag)
 	}
 
 	return false;
+}
+
+void BaseObject::OnCollisionEnter(BaseObject* otherObject, Vector3 location, Vector3 impulse)
+{
+	OutputMessage("%s started Collision with %s at x: %f, y: %f, z: %f\n", m_ObjectName.c_str(), otherObject->GetObjectName().c_str(), location.x, location.y, location.z);
+}
+
+void BaseObject::OnCollisionExit(BaseObject* otherObject, Vector3 location, Vector3 impulse)
+{
+	OutputMessage("%s ended Collision with %s at x: %f, y: %f, z: %f\n", m_ObjectName.c_str(), otherObject->GetObjectName().c_str(), location.x, location.y, location.z);
 }
 
 bool BaseObject::Kill()

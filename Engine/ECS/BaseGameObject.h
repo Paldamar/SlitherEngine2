@@ -18,6 +18,7 @@ public:
 
 protected:
 	virtual void Startup();	
+	friend class BaseScene;
 protected:
 	std::vector<std::string> m_Tags;
 };

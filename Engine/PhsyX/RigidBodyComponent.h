@@ -9,7 +9,7 @@ public:
 	RigidBodyComponent();
 	~RigidBodyComponent();
 
-	void Init(PhysXWorld* world, ColliderShape shapeType, Vector3 position, Vector3 qRotation, bool isStatic);
+	void Init(PhysXWorld* world, ColliderShape shapeType, Vector3 position, Vector3 qRotation, bool isStatic, Vector3 shapeDetails);
 
 	virtual void Draw() override;
 

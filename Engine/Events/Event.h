@@ -3,7 +3,8 @@
 enum EventTypes
 {
 	EventType_Input,
-	EventType_NumTypes,
+	EventType_Physics,
+	EventType_NumTypes
 };
 
 class Event

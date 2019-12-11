@@ -1,4 +1,7 @@
-#include "SlitherEnginePCH.h"
+#include "EngineMacrosPCH.h"
+#include <Windows.h>
+#include <windowsx.h>
+#include <stdio.h>
 
 void OutputMessage(const char* message, ...)
 {

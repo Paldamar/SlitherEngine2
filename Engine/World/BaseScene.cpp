@@ -11,7 +11,7 @@ BaseScene::~BaseScene()
 {
 }
 
-BaseObject* BaseScene::GetSceneObjectByName(std::string name)
+BaseGameObject* BaseScene::GetSceneObjectByName(std::string name)
 {
 	if (name == "")
 		return nullptr;
@@ -25,12 +25,12 @@ BaseObject* BaseScene::GetSceneObjectByName(std::string name)
 	return nullptr;
 }
 
-std::vector<BaseObject*> BaseScene::GetSceneObjectsByTags(std::string tag)
+std::vector<BaseGameObject*> BaseScene::GetSceneObjectsByTags(std::string tag)
 {
 	if (tag == "")
-		return std::vector<BaseObject*>();
+		return std::vector<BaseGameObject*>();
 
-	std::vector<BaseObject*> foundObjects;
+	std::vector<BaseGameObject*> foundObjects;
 
 	for (auto GameObject : m_SceneObjects)
 	{
@@ -44,11 +44,11 @@ std::vector<BaseObject*> BaseScene::GetSceneObjectsByTags(std::string tag)
 }
 
 
-void BaseScene::AddObjectToScene(BaseObject* object)
+void BaseScene::AddObjectToScene(BaseGameObject* object)
 {
 	assert(m_SceneObjects.find(object->GetObjectName()) == m_SceneObjects.end());
 
-	m_SceneObjects.insert(std::pair<std::string, BaseObject*>(object->GetObjectName(), object));
+	m_SceneObjects.insert(std::pair<std::string, BaseGameObject*>(object->GetObjectName(), object));
 	object->m_Scene = this;
 }
 
@@ -91,7 +91,7 @@ void BaseScene::CleanupKilledObjects()
 		}
 	}
 #else
-	for (std::pair<std::string, BaseObject*> object : m_SceneObjects)
+	for (std::pair<std::string, BaseGameObject*> object : m_SceneObjects)
 	{
 		if (object.second->IsActive() == false)
 		{

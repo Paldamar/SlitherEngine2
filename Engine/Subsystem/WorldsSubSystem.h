@@ -17,9 +17,14 @@ public:
 	template<class worldType>
 	worldType* CreateWorld(std::string worldName)
 	{
-		worldType = new worldType(worldName);
+		worldType* newWorld = new worldType(worldName);
 
-		m_Worlds[worldName] = worldName;
+		if (m_ActiveWorld == nullptr)
+			m_ActiveWorld = newWorld;
+
+		m_Worlds[worldName] = newWorld;
+
+		return newWorld;
 	}
 
 	template<class worldType>
@@ -48,5 +53,5 @@ public:
 
 protected:
 	std::map<std::string, SlitherWorld*> m_Worlds;
-	SlitherWorld* m_ActiveWorld;
+	SlitherWorld* m_ActiveWorld = nullptr;
 };	

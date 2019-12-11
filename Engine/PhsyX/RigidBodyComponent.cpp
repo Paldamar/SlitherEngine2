@@ -14,7 +14,7 @@ RigidBodyComponent::~RigidBodyComponent()
 
 }
 
-void RigidBodyComponent::Init(PhysXWorld* world, ColliderShape shapeType, Vector3 position, Vector3 eulerRotation, bool isStatic)
+void RigidBodyComponent::Init(PhysXWorld* world, ColliderShape shapeType, Vector3 position, Vector3 eulerRotation, bool isStatic, Vector3 shapeDetails)
 {
 	ColliderComponent* newCollider = nullptr;
 	switch (shapeType)
@@ -28,7 +28,7 @@ void RigidBodyComponent::Init(PhysXWorld* world, ColliderShape shapeType, Vector
 		case ColliderShape::BoxCollider:
 		{
 			newCollider = CreateComponent<BoxColliderComponent>(ColliderShapeNames[(int)shapeType], GetOwner());
-			newCollider->Init(world, this, Vector3(10.0f, 10.0f, 10.0f), Vector3::Zero());
+			newCollider->Init(world, this, shapeDetails, Vector3::Zero());
 			break;
 		}
 	}
@@ -72,19 +72,6 @@ void RigidBodyComponent::Init(PhysXWorld* world, ColliderShape shapeType, Vector
 
 void RigidBodyComponent::Draw()
 {
-	int a = 0;
-	/*if (m_PhysxRigidDynamic)
-	{
-		PxTransform transform = m_PhysxRigidDynamic->getGlobalPose();
-		PxVec3 position = transform.p;
-		OutputMessage("RigidBodyPosition(Dynamic) x: %f, y: %f, z: %f", transform.p.x, transform.p.y, transform.p.z);
-	}
-	else if (m_PhysxRigidStatic)
-	{
-		PxTransform transform = m_PhysxRigidStatic->getGlobalPose();
-		PxVec3 position = transform.p;
-		OutputMessage("RigidBodyPosition(Static) x: %f, y: %f, z: %f", transform.p.x, transform.p.y, transform.p.z);
-	}*/
 }
 
 void RigidBodyComponent::Update(float deltaTime)
@@ -92,11 +79,11 @@ void RigidBodyComponent::Update(float deltaTime)
 	if (m_PhysxRigidDynamic)
 	{
 		PxTransform transform = m_PhysxRigidDynamic->getGlobalPose();
-		GetOwner()->SetObjectLocation(PhsyXSubSystem::Vec3LocationFromPxTransform(transform));
+		GetOwner()->SetTransform(PhsyXSubSystem::TransformFromPxTransform(transform));
 	}
 	else if (m_PhysxRigidStatic)
 	{
 		PxTransform transform = m_PhysxRigidStatic->getGlobalPose();
-		GetOwner()->SetObjectLocation(PhsyXSubSystem::Vec3LocationFromPxTransform(transform));
+		GetOwner()->SetTransform(PhsyXSubSystem::TransformFromPxTransform(transform));
 	}
 }
