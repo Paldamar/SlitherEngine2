@@ -18,7 +18,7 @@ public:
 	virtual void Update(float deltaTime);
 	virtual void Draw();
 
-	bool IsAffectedByPhysics() { return true; }
+	bool IsAffectedByPhysics() { return m_AffectedByPhysics; }
 	void SetAffectedByPhysics(bool toggle) { m_AffectedByPhysics = toggle; }
 
 	virtual void CleanupKilledObjects();

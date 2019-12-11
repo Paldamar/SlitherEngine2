@@ -25,7 +25,6 @@ workspace "Game"
             "**.h",
         },
     }
-
 ------------------------------------------------ Game Project
 project "MainGame"
     location    "build"
@@ -120,7 +119,6 @@ project "MainGame"
 		links {
 			"Libraries/FBX_SDK/lib/vs2015/x64/release/libfbxsdk-mt",
 		}
-
 ------------------------------------------------ SlitherEngine Project
 project "SlitherEngine"
     location    "build"
@@ -190,7 +188,6 @@ project "SlitherEngine"
 		links {
 			"Libraries/FBX_SDK/lib/vs2015/x64/release/libfbxsdk-mt",
 		}
-
 ------------------------------------------------ Math Project
 project "Math"
     location    "build"
@@ -459,9 +456,6 @@ project "EngineMacros"
         "Engine/EngineMacros/**.cpp",
         "Engine/EngineMacros/**.h",
     }
-	
-	links {
-    }
 
     filter "configurations:Debug"
         defines { "DEBUG" }
@@ -483,14 +477,10 @@ project "Timers"
         "Engine/Timers/**.cpp",
         "Engine/Timers/**.h",
     }
-	
-	links {
-    }
 
     filter "configurations:Debug"
         defines { "DEBUG" }
-        symbols "On"
-		
+        symbols "On"		
 ------------------------------------------------ Vulkan Project
 project "Vulkan"
     location    "build"
