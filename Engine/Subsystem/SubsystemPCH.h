@@ -17,6 +17,7 @@
 #include "EventHandlerSubSystem.h"
 #include "TimerSubSystem.h"
 #include "WorldsSubSystem.h"
+#include "VulkanSubsystem.h"
 #include "SubSystemManager.h"
 
 #pragma warning(disable : 26495)
