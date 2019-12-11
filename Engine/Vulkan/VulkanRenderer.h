@@ -87,17 +87,6 @@ struct UniformBufferObject
 	MyMatrix proj;
 };
 
-const std::vector<VulkanVertex> g_Vertices = {
-	VulkanVertex(vec4(-0.5f, -0.5f, 0.0f, 1.0f), vec4(1.0f, 0.0f, 0.0f, 1.0f)),
-	VulkanVertex(vec4(0.5f, -0.5f, 0.0f, 1.0f), vec4(0.0f, 1.0f, 0.0f, 1.0f)),
-	VulkanVertex(vec4(0.5f, 0.5f, 0.0f, 1.0f), vec4(0.0f, 0.0f, 1.0f, 1.0f)),
-	VulkanVertex(vec4(-0.5f, 0.5f, 0.0f, 1.0f), vec4(1.0f, 1.0f, 1.0f, 1.0f))
-};
-
-const std::vector<uint16_t> g_Indices = {
-	0, 1, 2, 2, 3, 0
-};
-
 class VulkanRenderer {
 public:
 	void Run();
@@ -148,6 +137,17 @@ private:
 	std::vector<VkDeviceMemory> m_UniformBuffersMemory;
 #pragma endregion
 VkDescriptorSetLayout m_DescriptorSetLayout;
+
+std::vector<VulkanVertex> m_Vertices = {
+	VulkanVertex(vec4(-0.5f, -0.5f, 0.0f, 1.0f), vec4(1.0f, 0.0f, 0.0f, 1.0f)),
+	VulkanVertex(vec4(0.5f, -0.5f, 0.0f, 1.0f), vec4(0.0f, 1.0f, 0.0f, 1.0f)),
+	VulkanVertex(vec4(0.5f, 0.5f, 0.0f, 1.0f), vec4(0.0f, 0.0f, 1.0f, 1.0f)),
+	VulkanVertex(vec4(-0.5f, 0.5f, 0.0f, 1.0f), vec4(1.0f, 1.0f, 1.0f, 1.0f))
+};
+
+const std::vector<uint16_t> m_Indices = {
+	0, 1, 2, 2, 3, 0
+};
 
 	bool CheckValidationLayerSupport();
 

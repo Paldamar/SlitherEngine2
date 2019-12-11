@@ -791,9 +791,9 @@ void VulkanRenderer::CreateCommandBuffers()
 
 		vkCmdBindIndexBuffer(m_CommandBuffers[i], m_IndexBuffer, 0, VK_INDEX_TYPE_UINT16);
 
-		vkCmdDrawIndexed(m_CommandBuffers[i], static_cast<uint32_t>(g_Indices.size()), 1, 0, 0, 0);
+		vkCmdDrawIndexed(m_CommandBuffers[i], static_cast<uint32_t>(m_Indices.size()), 1, 0, 0, 0);
 
-		vkCmdDraw(m_CommandBuffers[i], static_cast<uint32_t>(g_Vertices.size()), 1, 0, 0);
+		vkCmdDraw(m_CommandBuffers[i], static_cast<uint32_t>(m_Vertices.size()), 1, 0, 0);
 
 		vkCmdEndRenderPass(m_CommandBuffers[i]);
 
@@ -831,7 +831,7 @@ void VulkanRenderer::CreateSyncObjects()
 
 void VulkanRenderer::CreateVertexBuffer()
 {
-	VkDeviceSize bufferSize = sizeof(g_Vertices[0]) * g_Vertices.size();
+	VkDeviceSize bufferSize = sizeof(m_Vertices[0]) * m_Vertices.size();
 
 	VkBuffer stagingBuffer;
 	VkDeviceMemory stagingBufferMemory;
@@ -840,7 +840,7 @@ void VulkanRenderer::CreateVertexBuffer()
 
 	void* data;
 	vkMapMemory(m_Device, stagingBufferMemory, 0, bufferSize, 0, &data);
-	memcpy(data, g_Vertices.data(), (size_t)bufferSize);
+	memcpy(data, m_Vertices.data(), (size_t)bufferSize);
 	vkUnmapMemory(m_Device, stagingBufferMemory);
 
 	CreateBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, m_VertexBuffer, m_VertexBufferMemory);
@@ -853,7 +853,7 @@ void VulkanRenderer::CreateVertexBuffer()
 
 void VulkanRenderer::CreateIndexBuffer()
 {
-	VkDeviceSize bufferSize = sizeof(g_Indices[0]) * g_Indices.size();
+	VkDeviceSize bufferSize = sizeof(m_Indices[0]) * m_Indices.size();
 
 	VkBuffer stagingBuffer;
 	VkDeviceMemory stagingBufferMemory;
@@ -861,7 +861,7 @@ void VulkanRenderer::CreateIndexBuffer()
 
 	void* data;
 	vkMapMemory(m_Device, stagingBufferMemory, 0, bufferSize, 0, &data);
-	memcpy(data, g_Indices.data(), (size_t)bufferSize);
+	memcpy(data, m_Indices.data(), (size_t)bufferSize);
 	vkUnmapMemory(m_Device, stagingBufferMemory);
 
 	CreateBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, m_IndexBuffer, m_IndexBufferMemory);
