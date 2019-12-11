@@ -1,7 +1,7 @@
 #pragma once
 #include "../ECS/ECSPCH.h"
 
-class Camera :
+class VulkanCamera :
     public BaseGameObject
 {
 
@@ -9,8 +9,8 @@ private:
     float m_FOV;
 
 public:
-    Camera();
-    ~Camera();
+	VulkanCamera();
+    ~VulkanCamera();
 
     inline void SetFOV(float inFOV) { m_FOV = inFOV; }
     inline float GetFOV() { return m_FOV; }

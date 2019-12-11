@@ -246,109 +246,109 @@ void FbxLoader::GetVerticesAndIndice(
 	std::vector<VulkanVertex>& outVertexVector,
 	std::vector<uint32_t>& outIndexVector)
 {
-	// Vertex and Index
-	//TODO Week 7: DECLARE a variable called IndexMapping of type std::unordered_map<Vertex, uint32_t>
-	std::unordered_map<VulkanVertex, uint32_t> IndexMapping;
-	//TODO Week 7: DECALRE a variable called VertexIndex of type uint32_t and set it to ZERO
-	uint32_t VertexIndex = 0;
-	//TODO Week 7: DECLARE a variable called tCount of type int and assign it to the return value of pMesh->GetPolygonCount()
-	int tCount = pMesh->GetPolygonCount(); // Triangle
-
-	//TODO Week 7: FOR int i = 0; i < tCount; ++i
-	for (int i = 0; i < tCount; ++i)
-	{
-		// Vertex and Index info
-		//TODO Week 7: FOR int j = 0; j < 3; ++j
-		for (int j = 0; j < 3; ++j)
-		{
-			//TODO Week 7: DECLARE a variable called controlPointIndex and assign it to the return value of --> pMesh->GetPolygonVertex(i, j)
-			int controlPointIndex = pMesh->GetPolygonVertex(i, j);
-			//TODO Week 7: DECLARE a variable called CurrCtrlPoint and assign it to --> mControlPoints[controlPointIndex]
-			CtrlPoint* CurrCtrlPoint = mControlPoints[controlPointIndex];
-
-			// Normal
-			//TODO Week 7: DECLARE a variable called pNormal of type FbxVector4
-			FbxVector4 pNormal;
-			//TODO Week 7: CALL GetPolygonVertexNormal(...) on pMesh and pass in --> i, j, pNormal
-			pMesh->GetPolygonVertexNormal(i, j, pNormal);
-
-			// UV
-			//TODO Week 7: DECLARE a variable called lUVs of type float* and assign NULL to it
-			float* lUVs = NULL;
-			//TODO Week 7: DECLARE a variable called lUVNames of type FbxStringList
-			FbxStringList lUVNames;
-			//TODO Week 7: CALL GetUVSetNames(..) on pMesh passing in lUVNames
-			pMesh->GetUVSetNames(lUVNames);
-			//TODO Week 7: DECLARE a variable called lUVName of type const char* and assign NULL to it
-			const char* lUVName = NULL;
-			//TODO Week 7: IF lUVNames.GetCount()
-			if (lUVNames.GetCount())
-			{
-				//TODO Week 7: SET lUVName to lUVNames[0]
-				lUVName = lUVNames[0];
-			}
-			//END lUVNames.GetCount()
-
-			//TODO Week 7: DECLARE a variable called pUVs of type FbxVector2
-			FbxVector2 pUVs;
-			//TODO Week 7: DECLARE a variable called bUnMappedUV of type bool
-			bool bUnMappedUV;
-
-			//TODO Week 7: IF !pMesh->GetPolygonVertexUV(i, j, lUVName, pUVs, bUnMappedUV)
-			if (!pMesh->GetPolygonVertexUV(i, j, lUVName, pUVs, bUnMappedUV))
-			{
-				MessageBox(0, L"UV not found", 0, 0);
-			}
-			//ENDIF !pMesh->GetPolygonVertexUV(i, j, lUVName, pUVs, bUnMappedUV)
-
-			//TODO Week 7: DECLARE a variable called Temp of type Vertex
-            VulkanVertex Temp;
-			// Position
-			//TODO Week 7: SET Temp.Pos.x, Temp.Pos.y, Temp.Pos.z //UNCOMMENT LINES BELOW
-			Temp.position.x = CurrCtrlPoint->mPosition.x;
-			Temp.position.y = CurrCtrlPoint->mPosition.y;
-			Temp.position.z = CurrCtrlPoint->mPosition.z;
-
-			// Normal
-			//TODO Week 7: SET Temp.Normal.x, Temp.Normal.y, Temp.Normal.z //UNCOMMENT LINES BELOW
-			Temp.normal.x = pNormal.mData[0];
-			Temp.normal.y = pNormal.mData[1];
-			Temp.normal.z = pNormal.mData[2];
-
-			// UV
-			//TODO Week 7: SET Temp.TexC.x, Temp.TexC.y //UNCOMMENT LINES BELOW
-			Temp.texC.x = pUVs.mData[0];
-			Temp.texC.y = 1.0f - pUVs.mData[1];
-
-			// push vertex and index
-			//TODO Week 7: DECLARE a auto variable called lookup and assign it to the return value of --> IndexMapping.find(Temp)
-			auto lookup = IndexMapping.find(Temp);
-			//TODO Week 7: IF lookup != IndexMapping.end()
-			if (lookup != IndexMapping.end())
-			{
-				// Index
-				//TODO Week 7: ADD lookup->second to the outIndexVector vector
-				outIndexVector.push_back(lookup->second);
-			}
-			//ELSE
-			else
-			{
-				// Index
-				//TODO Week 7: ADD VertexIndex to the outIndexVector vector
-				outIndexVector.push_back(VertexIndex);
-				//TODO Week 7: SET IndexMapping[Temp] to VertexIndex
-				IndexMapping[Temp] = VertexIndex;
-
-				//TODO Week 7: INCREMENT VertexIndex
-				VertexIndex++;
-				//TODO Week 7: ADD Temp to the outVertexVector vector
-				outVertexVector.push_back(Temp);
-			}
-			//ENDIF lookup != IndexMapping.end()
-		}
-		//ENDFOR int j = 0; j < 3; ++j
-	}
-	//ENDIF int i = 0; i < tCount; ++i
+//	// Vertex and Index
+//	//TODO Week 7: DECLARE a variable called IndexMapping of type std::unordered_map<Vertex, uint32_t>
+////	std::unordered_map<VulkanVertex, uint32_t> IndexMapping;
+//	//TODO Week 7: DECALRE a variable called VertexIndex of type uint32_t and set it to ZERO
+//	uint32_t VertexIndex = 0;
+//	//TODO Week 7: DECLARE a variable called tCount of type int and assign it to the return value of pMesh->GetPolygonCount()
+//	int tCount = pMesh->GetPolygonCount(); // Triangle
+//
+//	//TODO Week 7: FOR int i = 0; i < tCount; ++i
+//	for (int i = 0; i < tCount; ++i)
+//	{
+//		// Vertex and Index info
+//		//TODO Week 7: FOR int j = 0; j < 3; ++j
+//		for (int j = 0; j < 3; ++j)
+//		{
+//			//TODO Week 7: DECLARE a variable called controlPointIndex and assign it to the return value of --> pMesh->GetPolygonVertex(i, j)
+//			int controlPointIndex = pMesh->GetPolygonVertex(i, j);
+//			//TODO Week 7: DECLARE a variable called CurrCtrlPoint and assign it to --> mControlPoints[controlPointIndex]
+//			CtrlPoint* CurrCtrlPoint = mControlPoints[controlPointIndex];
+//
+//			// Normal
+//			//TODO Week 7: DECLARE a variable called pNormal of type FbxVector4
+//			FbxVector4 pNormal;
+//			//TODO Week 7: CALL GetPolygonVertexNormal(...) on pMesh and pass in --> i, j, pNormal
+//			pMesh->GetPolygonVertexNormal(i, j, pNormal);
+//
+//			// UV
+//			//TODO Week 7: DECLARE a variable called lUVs of type float* and assign NULL to it
+//			float* lUVs = NULL;
+//			//TODO Week 7: DECLARE a variable called lUVNames of type FbxStringList
+//			FbxStringList lUVNames;
+//			//TODO Week 7: CALL GetUVSetNames(..) on pMesh passing in lUVNames
+//			pMesh->GetUVSetNames(lUVNames);
+//			//TODO Week 7: DECLARE a variable called lUVName of type const char* and assign NULL to it
+//			const char* lUVName = NULL;
+//			//TODO Week 7: IF lUVNames.GetCount()
+//			if (lUVNames.GetCount())
+//			{
+//				//TODO Week 7: SET lUVName to lUVNames[0]
+//				lUVName = lUVNames[0];
+//			}
+//			//END lUVNames.GetCount()
+//
+//			//TODO Week 7: DECLARE a variable called pUVs of type FbxVector2
+//			FbxVector2 pUVs;
+//			//TODO Week 7: DECLARE a variable called bUnMappedUV of type bool
+//			bool bUnMappedUV;
+//
+//			//TODO Week 7: IF !pMesh->GetPolygonVertexUV(i, j, lUVName, pUVs, bUnMappedUV)
+//			if (!pMesh->GetPolygonVertexUV(i, j, lUVName, pUVs, bUnMappedUV))
+//			{
+//				MessageBox(0, L"UV not found", 0, 0);
+//			}
+//			//ENDIF !pMesh->GetPolygonVertexUV(i, j, lUVName, pUVs, bUnMappedUV)
+//
+//			//TODO Week 7: DECLARE a variable called Temp of type Vertex
+//            VulkanVertex Temp;
+//			// Position
+//			//TODO Week 7: SET Temp.Pos.x, Temp.Pos.y, Temp.Pos.z //UNCOMMENT LINES BELOW
+//			Temp.position.x = CurrCtrlPoint->mPosition.x;
+//			Temp.position.y = CurrCtrlPoint->mPosition.y;
+//			Temp.position.z = CurrCtrlPoint->mPosition.z;
+//
+//			// Normal
+//			//TODO Week 7: SET Temp.Normal.x, Temp.Normal.y, Temp.Normal.z //UNCOMMENT LINES BELOW
+//			Temp.normal.x = pNormal.mData[0];
+//			Temp.normal.y = pNormal.mData[1];
+//			Temp.normal.z = pNormal.mData[2];
+//
+//			// UV
+//			//TODO Week 7: SET Temp.TexC.x, Temp.TexC.y //UNCOMMENT LINES BELOW
+//			Temp.texC.x = pUVs.mData[0];
+//			Temp.texC.y = 1.0f - pUVs.mData[1];
+//
+//			// push vertex and index
+//			//TODO Week 7: DECLARE a auto variable called lookup and assign it to the return value of --> IndexMapping.find(Temp)
+//			auto lookup = IndexMapping.find(Temp);
+//			//TODO Week 7: IF lookup != IndexMapping.end()
+//			if (lookup != IndexMapping.end())
+//			{
+//				// Index
+//				//TODO Week 7: ADD lookup->second to the outIndexVector vector
+//				outIndexVector.push_back(lookup->second);
+//			}
+//			//ELSE
+//			else
+//			{
+//				// Index
+//				//TODO Week 7: ADD VertexIndex to the outIndexVector vector
+//				outIndexVector.push_back(VertexIndex);
+//				//TODO Week 7: SET IndexMapping[Temp] to VertexIndex
+//				//IndexMapping[Temp] = VertexIndex;
+//
+//				//TODO Week 7: INCREMENT VertexIndex
+//				VertexIndex++;
+//				//TODO Week 7: ADD Temp to the outVertexVector vector
+//				outVertexVector.push_back(Temp);
+//			}
+//			//ENDIF lookup != IndexMapping.end()
+//		}
+//		//ENDFOR int j = 0; j < 3; ++j
+//	}
+//	//ENDIF int i = 0; i < tCount; ++i
 }
 
 void FbxLoader::GetMaterials(FbxNode* pNode/*, std::vector<Material>& outMaterial*/)

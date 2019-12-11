@@ -60,8 +60,7 @@ project "MainGame"
         "Game/MainGame/**.cpp",
         "Game/MainGame/**.h",
         "premake5.lua",
-        "GenerateBuildFiles.bat",
-		"GenerateShaders.bat"
+        "GenerateEngine.bat",
         --".gitignore",
     }
 
@@ -359,6 +358,7 @@ project "World"
 	
 	links {
         "Math",
+		"Vulkan",
 		"EngineMacros"
     }
 
