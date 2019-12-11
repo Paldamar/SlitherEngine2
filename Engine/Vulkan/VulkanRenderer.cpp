@@ -927,6 +927,14 @@ void VulkanRenderer::UpdateUniformBuffer(uint32_t currentImage)
 	ubo.model = mat;
 	mat.CreateLookAtView(vec3(-5.0f, 15.0f, 0.0f), vec3(0.0, 1.0f, 0.0f), vec3(0.0f));
 	ubo.view = mat;
+    mat.CreatePerspectiveHFoV(45.0f, m_SwapChainExtent.width / (float) m_SwapChainExtent.height, 0.1f, 10.0f);
+    ubo.proj = mat;
+    //ubo.proj[1][1] *= -1;
+
+    void* data;
+    vkMapMemory(m_Device, m_UniformBuffersMemory[currentImage], 0, sizeof(ubo), 0, &data);
+    memcpy(data, &ubo, sizeof(ubo));
+    vkUnmapMemory(m_Device, m_UniformBuffersMemory[currentImage]);
 }
 
 void VulkanRenderer::CreateDescriptorSetLayout()
