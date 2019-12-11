@@ -6,7 +6,8 @@ enum SubSystemID
 {
 	NULLSystem,
 	EventSystem,
-	DXSystem,
+	DirectXSystem,
+	VulkanSystem,
 	XAudio,
 	World,
 	PhysX,
