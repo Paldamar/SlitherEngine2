@@ -1,3 +1,7 @@
 premake5 vs2019
-pause
+
+cd build
+
+Game.sln
+
 exit
