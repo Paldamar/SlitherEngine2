@@ -12,6 +12,7 @@ public:
 public:
 	Vector4() {}
 	Vector4(float nx, float ny, float nz, float nw) { x = nx; y = ny; z = nz; w = nw; }
+    Vector4(float nxyzw) { x = nxyzw; y = nxyzw; z = nxyzw; w = nxyzw; }
 	Vector4(Vector2 vec, float nz, float nw) { x = vec.x; y = vec.y; z = nz; w = nw; }
 	Vector4(Vector3 vec, float nw) { x = vec.x; y = vec.y; z = vec.z; w = nw; }
 

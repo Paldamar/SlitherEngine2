@@ -504,8 +504,8 @@ project "Vulkan"
 		"Engine/EngineMacros",
 		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Include",
 		"Libraries/glfw-3.3.bin.WIN64/include",
-		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019"
-
+		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019",
+		"Libraries/FBX_SDK/include"
     }
 
     files {
