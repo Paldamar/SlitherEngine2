@@ -61,6 +61,9 @@ void Framework::Init(int width, int height, HINSTANCE hInstance)
 	WorldsSubSystem* worldSystem =
 		GetGameCore()->GetSubSystemManager()->CreateSubSystem<WorldsSubSystem>("WorldSystem", SubSystemID::World);
 
+	PhsyXSubSystem* physXSystem =
+		GetGameCore()->GetSubSystemManager()->CreateSubSystem<PhsyXSubSystem>("PhysXSystem", SubSystemID::PhysX);
+
 	if (directXSystem)
 	{
 		directXSystem->SetCallBack(Framework::WndProc);
@@ -90,6 +93,9 @@ int Framework::Run(GameCore* pGameCore)
 		reinterpret_cast<EventHandlerSubSystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByType(EventSystem));
 	WorldsSubSystem* worldSystem =
 		reinterpret_cast<WorldsSubSystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByType(SubSystemID::World));
+	PhsyXSubSystem* physXSystem =
+		reinterpret_cast<PhsyXSubSystem*>(m_GameCore->GetSubSystemManager()->GetSubSystemByType(SubSystemID::PhysX));
+
 	// ---------------------------------
 
 	if (CALL_OBJECT_CLEANUP_BY_TIMER)
@@ -135,6 +141,8 @@ int Framework::Run(GameCore* pGameCore)
 
 					OutputMessage("TimerSubSystem : Updating High Priority Timers \n");
 					timerSystem->UpdateHighPriotityTimers(deltaTime);
+					physXSystem->Update(deltaTime);
+					worldSystem->Update(deltaTime);
 
 					//m_GameCore->GetFramework()->WndProc(m_hWnd, msg.message, m_wParam, m_lParam);
 

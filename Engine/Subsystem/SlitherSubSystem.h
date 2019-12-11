@@ -28,9 +28,12 @@ public:
 
 	inline bool operator ==(const SlitherSubSystem& o) const { return this->m_InstanceID == o.m_InstanceID; }
 	inline bool operator !=(const SlitherSubSystem& o) const { return this->m_InstanceID != o.m_InstanceID; }
+
+	inline Framework* GetEngineInstance() { return m_EngineInstance; }
+protected:
+	Framework* m_EngineInstance;
 private:
 	SubSystemID m_InstanceID;
-	std::string m_SystemName;
-	Framework* m_EngineInstance;
+	std::string m_SystemName;	
 };
 

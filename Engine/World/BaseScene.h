@@ -1,6 +1,6 @@
 #pragma once
 
-class BaseObject;
+class BaseGameObject;
 class SlitherWorld;
 
 class BaseScene
@@ -9,11 +9,11 @@ public:
 	BaseScene(std::string sceneName);
 	~BaseScene();
 
-	virtual BaseObject* GetSceneObjectByName(std::string name);
-	virtual std::vector<BaseObject*> GetSceneObjectsByTags(std::string tag);
+	virtual BaseGameObject* GetSceneObjectByName(std::string name);
+	virtual std::vector<BaseGameObject*> GetSceneObjectsByTags(std::string tag);
 	inline virtual std::string GetSceneName() { return m_SceneName; }
 
-	virtual void AddObjectToScene(BaseObject* object);
+	virtual void AddObjectToScene(BaseGameObject* object);
 
 	virtual void Update(float deltaTime);
 	virtual void Draw();
@@ -28,9 +28,9 @@ protected:
 	virtual void Startup();
 
 protected:
-	std::map<std::string, BaseObject*> m_SceneObjects;
+	std::map<std::string, BaseGameObject*> m_SceneObjects;
 #if !DESTROY_GAMEOBJECTS_DURING_RUNTIME
-	std::map<std::string, BaseObject*> m_KilledOjbects;
+	std::map<std::string, BaseGameObject*> m_KilledOjbects;
 #endif
 	std::string m_SceneName;	
 	bool m_AffectedByPhysics = false;

@@ -44,6 +44,7 @@ project "MainGame"
 		"Engine/XAudio",
 		"Engine/PhsyX",
 		"EngineMacros",
+		"Engine/Events",
 		"Libraries/PhysX/pxshared/include",
 		"Libraries/PhysX/physx/include",
 		"Libraries/PhysX/physx/source/foundation/include",
@@ -74,6 +75,7 @@ project "MainGame"
 		"SubSystem",
 		"ECS",
 		"PhsyX",
+		"Events",
 		"Libraries/PhysX/PhysX_64.lib",
 		"Libraries/PhysX/PhysXCharacterKinematic_static_64.lib",
 		"Libraries/PhysX/PhysXCommon_64.lib",
@@ -116,7 +118,8 @@ project "SlitherEngine"
 		"Engine/ECS",
 		"Engine/XAudio",
 		"Engine/PhsyX",
-		"EngineMacros",
+		"Engine/EngineMacros",
+		"Engine/Events",
 		"Libraries/PhysX/pxshared/include",
 		"Libraries/PhysX/physx/include",
 		"Libraries/PhysX/physx/source/foundation/include",
@@ -134,7 +137,8 @@ project "SlitherEngine"
 		"SubSystem",
 		"XAudio",
 		"ECS",
-		"PhsyX"
+		"PhsyX",
+		"Events"
     }
 
     filter "configurations:Debug"
@@ -253,7 +257,7 @@ project "ECS"
     pchsource   "Engine/ECS/ECSPCH.cpp"
 
     includedirs {
-		"EngineMacros"
+		"Engine/EngineMacros"
     }
 
     files {
@@ -338,10 +342,13 @@ project "PhsyX"
 		"Engine/Math",
 		"Engine/Subsystem",
 		"Engine/ECS",
+		"Engine/Events",
+		"Engine/SlitherEngine",
 		"Libraries/PhysX/pxshared/include",
 		"Libraries/PhysX/physx/include",
 		"Libraries/PhysX/physx/source/foundation/include",
 		"Libraries/PhysX/physx/source/common/src"
+
     }
 
     files {
@@ -354,6 +361,7 @@ project "PhsyX"
 		"Subsystem",
 		"XAudio",
 		"ECS",
+		"Events",
 		"Libraries/PhysX/PhysX_64.lib",
 		"Libraries/PhysX/PhysXCharacterKinematic_static_64.lib",
 		"Libraries/PhysX/PhysXCommon_64.lib",
@@ -434,6 +442,30 @@ project "Timers"
     files {
         "Engine/Timers/**.cpp",
         "Engine/Timers/**.h",
+    }
+	
+	links {
+    }
+
+    filter "configurations:Debug"
+        defines { "DEBUG" }
+        symbols "On"
+		------------------------------------------------ Vulkan Project
+project "Vulkan"
+    location    "build"
+	dependson   {"EngineMacros"}
+    kind        "StaticLib"
+    language    "C++"
+    pchheader   "VulkanPCH.h"
+    pchsource   "Engine/Timers/VulkanPCH.cpp"
+
+    includedirs {
+		"Engine/EngineMacros"
+    }
+
+    files {
+        "Engine/VUlkan/**.cpp",
+        "Engine/VUlkan/**.h",
     }
 	
 	links {

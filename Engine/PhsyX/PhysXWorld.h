@@ -1,5 +1,7 @@
 #pragma once
-
+#include "EventHandlerSubSystem.h"
+#include "PhsyXSubSystem.h"
+#include "PhysicsEvent.h"
 
 #define	SAFE_RELEASE(x)	if(x){ x->release(); x = NULL;	}
 
@@ -30,25 +32,48 @@ static PxFilterFlags contactReportFilterShader(PxFilterObjectAttributes attribut
 
 class ContactReportCallback : public PxSimulationEventCallback
 {
+public:
+	EventHandlerSubSystem* m_EventSubSystem;
+
 	virtual void onConstraintBreak(PxConstraintInfo* constraints, PxU32 count) override { PX_UNUSED(constraints); PX_UNUSED(count); }
 	virtual void onWake(PxActor** actors, PxU32 count) override { PX_UNUSED(actors); PX_UNUSED(count); }
 	virtual void onSleep(PxActor** actors, PxU32 count) override { PX_UNUSED(actors); PX_UNUSED(count); }
 	virtual void onTrigger(PxTriggerPair* pairs, PxU32 count) override { PX_UNUSED(pairs); PX_UNUSED(count); }
 	virtual void onAdvance(const PxRigidBody* const*, const PxTransform*, const PxU32) override {}
-	virtual void onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs) override {}
+	virtual void onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs) override
+	{
+		std::vector<PxContactPairPoint> contactPoints;
+
+		for (PxU32 i = 0; i < nbPairs; i++)
+		{
+			const PxContactPair& cPair = pairs[i];
+
+			if (cPair.events & (PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_CCD))
+			{
+				contactPoints.resize(cPair.contactCount);
+				cPair.extractContacts(&contactPoints[0], cPair.contactCount);
+
+				BaseObject* object1 = static_cast<BaseObject*>(cPair.shapes[0]->userData);
+				BaseObject* object2 = static_cast<BaseObject*>(cPair.shapes[1]->userData);
+				Event* newEvent = new PhysicsEvent(object1, object2, PhsyXSubSystem::Vec3FromPxVec3(contactPoints[0].position), 
+					PhsyXSubSystem::Vec3FromPxVec3(contactPoints[0].impulse), CollisionType::Collision_Start);
+				m_EventSubSystem->QueueEvent(newEvent);
+			}
+		}
+	}
 };
 
 class PhysXWorld
 {
 public:
-	PhysXWorld();
+	PhysXWorld(PhsyXSubSystem* owningSubSystem);
 	~PhysXWorld();
 
 	PxPhysics* GetPhysics() { return m_Physics; }
 	PxScene* GetScene() { return m_Scene; }
 	PxMaterial* GetMaterial() { return m_Material; }
 
-	virtual bool Init(ContactReportCallback* contactReport);
+	virtual bool Init(ContactReportCallback* contactReport = nullptr);
 	virtual void Update();
 
 	//create RigidBody
@@ -62,6 +87,10 @@ protected:
 	std::vector<PxVec3> m_ContactPositions;
 	std::vector<PxVec3> m_ContactImpulses;
 	std::vector<PxVec3> m_ContactSphereActorPositions;
+
+	ContactReportCallback m_Contact;
+
+	PhsyXSubSystem* m_OwningSubSystem = nullptr;
 
 private:
 

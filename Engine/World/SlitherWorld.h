@@ -28,11 +28,7 @@ public:
 	template<class Object>
 	Object* SpawnObject(std::string ObjectName, Transform3D spawnTransform)
 	{
-		Object* spawnedObject = new Object();
-
-		spawnedObject->SetName(ObjectName);
-
-		m_SceneMap["Main Scene"]->AddObjectToScene(spawnedObject);
+		Object* spawnedObject = SpawnObject<Object>(ObjectName, spawnTransform);
 
 		spawnedObject->SetTransform(spawnTransform);
 
@@ -51,9 +47,7 @@ public:
 			return NULL;
 		}
 
-		Object* spawnedObject = new Object();
-
-		spawnedObject->SetName(ObjectName);
+		Object* spawnedObject = SpawnObject<Object>(ObjectName);
 
 		m_SceneMap[sceneName]->AddObjectToScene(spawnedObject);
 
@@ -63,20 +57,7 @@ public:
 	template<class Object>
 	Object* SpawnObject(std::string ObjectName, std::string sceneName, Transform3D spawnTransform, bool createSceneIfFailed = false)
 	{
-		if (m_SceneMap.find(sceneName) == m_SceneMap.end() && createSceneIfFailed == true)
-		{
-			m_SceneMap.insert(std::pair<std::string, BaseScene*>(sceneName, new BaseScene(sceneName)));
-		}
-		else
-		{
-			return NULL;
-		}
-
-		Object* spawnedObject = new Object();
-
-		spawnedObject->SetName(ObjectName);
-
-		m_SceneMap[sceneName]->AddObjectToScene(spawnedObject);
+		Object* spawnedObject = SpawnObject<Object>(ObjectName,sceneName,createSceneIfFailed)
 
 		spawnedObject->SetTransform(spawnTransform);
 
@@ -98,7 +79,7 @@ public:
 	template<class sceneClass>
 	sceneClass* MakeScene(std::string sceneName, bool affectedByPhysics)
 	{
-		sceneClass* scene = MakeScene(sceneName)
+		sceneClass* scene = MakeScene<sceneClass>(sceneName)
 		if(scene);
 		{
 			scene->SetAffectedByPhysics(affectedByPhysics);

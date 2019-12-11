@@ -1,9 +1,20 @@
 #include "PhsyXPCH.h"
+#include <Windows.h>
+#include <windowsx.h>
+#include "../DX12/GameTimer.h"
+#include "Framework.h"
+#include "SlitherSubSystem.h"
+#include "GameCore.h"
+#include "SubSystemManager.h"
 #include "PhysXWorld.h"
 
-PhysXWorld::PhysXWorld()
-{
+#include "PhsyXSubSystem.h"
 
+#include "EventHandlerSubSystem.h"
+
+PhysXWorld::PhysXWorld(PhsyXSubSystem* owningSubSystem)
+{
+	m_OwningSubSystem = owningSubSystem;
 }
 
 PhysXWorld::~PhysXWorld()
@@ -43,7 +54,17 @@ bool PhysXWorld::Init(ContactReportCallback* contactReport)
 	m_Dispatcher = PxDefaultCpuDispatcherCreate(2);
 	sceneDesc.cpuDispatcher = m_Dispatcher;
 	sceneDesc.filterShader = contactReportFilterShader;
-	sceneDesc.simulationEventCallback = contactReport;
+
+	if (contactReport)
+	{
+		sceneDesc.simulationEventCallback = contactReport;
+	}
+	else
+	{
+		m_Contact.m_EventSubSystem = static_cast<EventHandlerSubSystem*>(m_OwningSubSystem->GetEngineInstance()->GetGameCore()->GetSubSystemManager()->GetSubSystemByType(SubSystemID::EventSystem));
+		sceneDesc.simulationEventCallback = &m_Contact;
+	}
+
 	sceneDesc.flags |= PxSceneFlag::eENABLE_CCD;
 	sceneDesc.ccdMaxPasses = 4;
 	m_Scene = m_Physics->createScene(sceneDesc);
