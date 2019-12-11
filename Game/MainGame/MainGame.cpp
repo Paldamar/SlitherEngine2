@@ -74,6 +74,6 @@ void MainGame::Update(float deltaTime)
 	if (rigidBodyComp)	
 	{
 		PxTransform transform = rigidBodyComp->GetPhysXDynamic()->getGlobalPose();
-		OutputMessage("DynamicObjectRigidBodyTransform\nPostion: x: %f, y: %f, z: %f\nRotation: x: %f, y: %f, z: %f, w: %f", transform.p.x, transform.p.y, transform.p.z, transform.q.x, transform.q.y, transform.q.z, transform.q.w);
+		OutputMessage("DynamicObjectRigidBodyTransform\nPostion: x: %f, y: %f, z: %f\nRotation: x: %f, y: %f, z: %f, w: %f \n", transform.p.x, transform.p.y, transform.p.z, transform.q.x, transform.q.y, transform.q.z, transform.q.w);
 	}
 }
