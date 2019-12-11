@@ -56,6 +56,8 @@ void MainGame::LoadContent()
 		BaseGameObject* staticObject = m_World->SpawnObject<BaseGameObject>("StaticObject");
 		RigidBodyComponent* staticRigidBody = staticObject->CreateComponent<RigidBodyComponent>("RigidBody");
 		staticRigidBody->Init(physXWorld, ColliderShape::BoxCollider, Vector3(0.0f, -20.0f, 0.0f), Vector3::Zero(), true, Vector3(10.0f, 10.0f, 10.0f));
+
+        Camera* camera = m_World->SpawnObject<Camera>("Camera");
 	}
 	
 }

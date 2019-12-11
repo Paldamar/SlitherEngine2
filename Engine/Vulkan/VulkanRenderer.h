@@ -44,13 +44,40 @@ struct SwapChainSupportDetails
 struct VulkanVertex
 {
 	vec4 position;
+    vec4 normal;
 	vec4 color;
+    vec2 texC;
+
+    VulkanVertex()
+    {
+        position = vec4(1.0f);
+        normal = vec4(1.0f);
+        color = vec4(1.0f);
+        texC = vec2(1.0f);
+    }
 
 	VulkanVertex(vec4 inPos, vec4 inCol)
 	{
 		position = inPos;
 		color = inCol;
+        normal = vec4(1.0f);
 	}
+
+    VulkanVertex(vec4 inPos, vec4 inCol, vec4 inNorm)
+    {
+        position = inPos;
+        color = inCol;
+        normal = inNorm;
+        texC = vec2(1.0f);
+    }
+
+    VulkanVertex(vec4 inPos, vec4 inCol, vec4 inNorm, vec2 inTex)
+    {
+        position = inPos;
+        color = inCol;
+        normal = inNorm;
+        texC = inTex;
+    }
 
 	static VkVertexInputBindingDescription GetBindingDescription() 
 	{

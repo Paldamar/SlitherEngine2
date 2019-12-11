@@ -1,7 +1,7 @@
 #pragma once
+#include "BaseObject.h"
+#include "BaseGameObject.h"
 
-class BaseObject;
-class BaseGameObject;
 
 class BaseComponent : public BaseObject
 {
