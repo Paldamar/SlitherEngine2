@@ -47,6 +47,7 @@ project "MainGame"
 		"Engine/XAudio",
 		"Engine/PhsyX",
 		"EngineMacros",
+		"Engine/Events",
 		"Libraries/PhysX/pxshared/include",
 		"Libraries/PhysX/physx/include",
 		"Libraries/PhysX/physx/source/foundation/include",
@@ -61,6 +62,7 @@ project "MainGame"
         "Game/MainGame/**.h",
         "premake5.lua",
         "GenerateBuildFiles.bat",
+		"GenerateShaders.bat"
         --".gitignore",
     }
 
@@ -85,6 +87,7 @@ project "MainGame"
 		"SubSystem",
 		"ECS",
 		"PhsyX",
+		"Events",
 		"Libraries/PhysX/PhysX_64.lib",
 		"Libraries/PhysX/PhysXCharacterKinematic_static_64.lib",
 		"Libraries/PhysX/PhysXCommon_64.lib",
@@ -96,7 +99,6 @@ project "MainGame"
 		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/shaderc_combined.lib",
 		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/VkLayer_utils.lib",
 		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/vulkan-1.lib",
-		--"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3.lib",
 		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3dll.lib"
     }
 
@@ -137,7 +139,8 @@ project "SlitherEngine"
 		"Engine/ECS",
 		"Engine/XAudio",
 		"Engine/PhsyX",
-		"EngineMacros",
+		"Engine/EngineMacros",
+		"Engine/Events",
 		"Libraries/PhysX/pxshared/include",
 		"Libraries/PhysX/physx/include",
 		"Libraries/PhysX/physx/source/foundation/include",
@@ -159,22 +162,20 @@ project "SlitherEngine"
 		"ECS",
 		"PhsyX",
 		"Vulkan",
+		"Events",
 		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/shaderc_combined.lib",
 		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/VkLayer_utils.lib",
 		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/vulkan-1.lib",
-		--"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3.lib",
 		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3dll.lib"
     }
+
+	linkoptions {
+		"/ignore:4006"
+	}
 
     filter "configurations:Debug"
         defines { "DEBUG" }
         symbols "On"
-
-    --filter "files:Libraries/Framework/Libraries/**"
-    --    flags   "NoPCH"
-
-    --filter "files:Libraries/Framework/Libraries/LodePNG/**"
-    --    disablewarnings { "4551", "4334", "4267" }
 	
 	    filter "configurations:Debug"
         defines         "_DEBUG"
@@ -279,6 +280,10 @@ project "SubSystem"
 		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3dll.lib"
     }
 
+	linkoptions {
+		"/ignore:4006"
+	}
+
     filter "configurations:Debug"
         defines { "DEBUG" }
         symbols "On"
@@ -292,7 +297,7 @@ project "ECS"
     pchsource   "Engine/ECS/ECSPCH.cpp"
 
     includedirs {
-		"EngineMacros"
+		"Engine/EngineMacros"
     }
 
     files {
@@ -377,10 +382,13 @@ project "PhsyX"
 		"Engine/Math",
 		"Engine/Subsystem",
 		"Engine/ECS",
+		"Engine/Events",
+		"Engine/SlitherEngine",
 		"Libraries/PhysX/pxshared/include",
 		"Libraries/PhysX/physx/include",
 		"Libraries/PhysX/physx/source/foundation/include",
 		"Libraries/PhysX/physx/source/common/src"
+
     }
 
     files {
@@ -393,6 +401,7 @@ project "PhsyX"
 		"Subsystem",
 		"XAudio",
 		"ECS",
+		"Events",
 		"Libraries/PhysX/PhysX_64.lib",
 		"Libraries/PhysX/PhysXCharacterKinematic_static_64.lib",
 		"Libraries/PhysX/PhysXCommon_64.lib",
@@ -495,8 +504,8 @@ project "Vulkan"
 		"Engine/EngineMacros",
 		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Include",
 		"Libraries/glfw-3.3.bin.WIN64/include",
-		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019"
-
+		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019",
+		"Libraries/FBX_SDK/include"
     }
 
     files {
@@ -512,7 +521,6 @@ project "Vulkan"
 		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/shaderc_combined.lib",
 		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/VkLayer_utils.lib",
 		"Libraries/Vulkan/VulkanSDK/1.1.126.0/Lib/vulkan-1.lib",
-		--"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3.lib",
 		"Libraries/glfw-3.3.bin.WIN64/lib-vc2019/glfw3dll.lib",
 		}
 
@@ -520,3 +528,6 @@ project "Vulkan"
         defines { "DEBUG" }
         symbols "On"
 
+		linkoptions {
+		"/ignore:4006"
+	}
