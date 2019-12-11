@@ -144,6 +144,8 @@ private:
 	VkDeviceMemory m_VertexBufferMemory;
 	VkBuffer m_IndexBuffer;
 	VkDeviceMemory m_IndexBufferMemory;
+	std::vector<VkBuffer> m_UniformBuffers;
+	std::vector<VkDeviceMemory> m_UniformBuffersMemory;
 #pragma endregion
 VkDescriptorSetLayout m_DescriptorSetLayout;
 
@@ -177,6 +179,8 @@ VkDescriptorSetLayout m_DescriptorSetLayout;
 
 	void CreateSwapChain();
 
+	void RecreateSwapChain();
+
 	void CreateImageViews();
 
 #pragma endregion
@@ -204,6 +208,10 @@ VkDescriptorSetLayout m_DescriptorSetLayout;
 	void CreateIndexBuffer();
 
 	void CreateBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);
+
+	void CreateUniformBuffers();
+
+	void UpdateUniformBuffer(uint32_t currentImage);
 
 	void CreateDescriptorSetLayout();
 

@@ -3,6 +3,7 @@
 
 #include <map>
 #include <fstream>
+#include <chrono>
 
 
 void VulkanRenderer::Run()
@@ -63,7 +64,7 @@ void VulkanRenderer::InitWindow()
 
 	glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
 	{
-		
+
 	});
 }
 
@@ -81,6 +82,7 @@ void VulkanRenderer::InitVulkan()
 	CreateFrameBuffers();
 	CreateCommandPool();
 	CreateVertexBuffer();
+	CreateUniformBuffers();
 	CreateIndexBuffer();
 	CreateCommandBuffers();
 	CreateSyncObjects();
@@ -332,6 +334,28 @@ void VulkanRenderer::CreateSwapChain()
 	m_SwapChainExtent = extent;
 }
 
+void VulkanRenderer::RecreateSwapChain()
+{
+	int width = 0, height = 0;
+	glfwGetFramebufferSize(m_Window, &width, &height);
+	while (width == 0 || height == 0) {
+		glfwGetFramebufferSize(m_Window, &width, &height);
+		glfwWaitEvents();
+	}
+
+	vkDeviceWaitIdle(m_Device);
+
+	CleanUpSwapChain();
+
+	CreateSwapChain();
+	CreateImageViews();
+	CreateRenderPass();
+	CreateGraphicsPipeline();
+	CreateFrameBuffers();
+	CreateUniformBuffers();
+	CreateCommandBuffers();
+}
+
 void VulkanRenderer::CreateImageViews()
 {
 	m_SwapChainImageViews.resize(m_SwapChainImages.size());
@@ -570,7 +594,7 @@ void VulkanRenderer::CreateGraphicsPipeline()
 	colorBlendAttachment.srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE;
 	colorBlendAttachment.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
 	colorBlendAttachment.alphaBlendOp = VK_BLEND_OP_ADD;
-	
+
 	VkPipelineColorBlendStateCreateInfo colorBlending = {};
 	colorBlending.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
 	colorBlending.logicOpEnable = VK_FALSE;
@@ -681,7 +705,7 @@ void VulkanRenderer::CreateFrameBuffers()
 {
 	m_SwapChainFramebuffers.resize(m_SwapChainImageViews.size());
 
-	for (size_t i = 0; i < m_SwapChainImageViews.size(); i++) 
+	for (size_t i = 0; i < m_SwapChainImageViews.size(); i++)
 	{
 		VkImageView attachments[] = {
 			m_SwapChainImageViews[i]
@@ -696,7 +720,7 @@ void VulkanRenderer::CreateFrameBuffers()
 		framebufferInfo.height = m_SwapChainExtent.height;
 		framebufferInfo.layers = 1;
 
-		if (vkCreateFramebuffer(m_Device, &framebufferInfo, nullptr, &m_SwapChainFramebuffers[i]) != VK_SUCCESS) 
+		if (vkCreateFramebuffer(m_Device, &framebufferInfo, nullptr, &m_SwapChainFramebuffers[i]) != VK_SUCCESS)
 		{
 			throw std::runtime_error("failed to create framebuffer!");
 		}
@@ -712,7 +736,7 @@ void VulkanRenderer::CreateCommandPool()
 	poolInfo.queueFamilyIndex = queueFamilyIndices.graphicsFamily.value();
 	poolInfo.flags = 0; // Optional
 
-	if (vkCreateCommandPool(m_Device, &poolInfo, nullptr, &m_CommandPool) != VK_SUCCESS) 
+	if (vkCreateCommandPool(m_Device, &poolInfo, nullptr, &m_CommandPool) != VK_SUCCESS)
 	{
 		throw std::runtime_error("failed to create command pool!");
 	}
@@ -728,19 +752,19 @@ void VulkanRenderer::CreateCommandBuffers()
 	allocInfo.commandBufferCount = (uint32_t)m_CommandBuffers.size();
 	allocInfo.pNext = nullptr;
 
-	if (vkAllocateCommandBuffers(m_Device, &allocInfo, m_CommandBuffers.data()) != VK_SUCCESS) 
+	if (vkAllocateCommandBuffers(m_Device, &allocInfo, m_CommandBuffers.data()) != VK_SUCCESS)
 	{
 		throw std::runtime_error("failed to allocate command buffers!");
 	}
 
-	for (size_t i = 0; i < m_CommandBuffers.size(); i++) 
+	for (size_t i = 0; i < m_CommandBuffers.size(); i++)
 	{
 		VkCommandBufferBeginInfo beginInfo = {};
 		beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 		beginInfo.flags = 0; // Optional
 		beginInfo.pInheritanceInfo = nullptr; // Optional
 
-		if (vkBeginCommandBuffer(m_CommandBuffers[i], &beginInfo) != VK_SUCCESS) 
+		if (vkBeginCommandBuffer(m_CommandBuffers[i], &beginInfo) != VK_SUCCESS)
 		{
 			throw std::runtime_error("failed to begin recording command buffer!");
 		}
@@ -875,6 +899,36 @@ void VulkanRenderer::CreateBuffer(VkDeviceSize size, VkBufferUsageFlags usage, V
 	vkBindBufferMemory(m_Device, buffer, bufferMemory, 0);
 }
 
+void VulkanRenderer::CreateUniformBuffers()
+{
+	VkDeviceSize bufferSize = sizeof(UniformBufferObject);
+
+	m_UniformBuffers.resize(m_SwapChainImages.size());
+	m_UniformBuffersMemory.resize(m_SwapChainImages.size());
+
+	for (size_t i = 0; i < m_SwapChainImages.size(); i++)
+	{
+		CreateBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, m_UniformBuffers[i], m_UniformBuffersMemory[i]);
+	}
+}
+
+void VulkanRenderer::UpdateUniformBuffer(uint32_t currentImage)
+{
+	static auto startTime = std::chrono::high_resolution_clock::now();
+
+	auto currentTime = std::chrono::high_resolution_clock::now();
+	float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
+
+
+	UniformBufferObject ubo = {};
+	MyMatrix mat;
+	mat.CreateSRT(vec3(1.0f), vec3(0.0f), vec3(0.0f));
+	mat.Rotate(time * 90.0f, 0.0f, 1.0f, 0.0f);
+	ubo.model = mat;
+	mat.CreateLookAtView(vec3(-5.0f, 15.0f, 0.0f), vec3(0.0, 1.0f, 0.0f), vec3(0.0f));
+	ubo.view = mat;
+}
+
 void VulkanRenderer::CreateDescriptorSetLayout()
 {
 	VkDescriptorSetLayoutBinding uboLayoutBinding = {};
@@ -889,7 +943,7 @@ void VulkanRenderer::CreateDescriptorSetLayout()
 	layoutInfo.bindingCount = 1;
 	layoutInfo.pBindings = &uboLayoutBinding;
 
-	if (vkCreateDescriptorSetLayout(m_Device, &layoutInfo, nullptr, &m_DescriptorSetLayout) != VK_SUCCESS) 
+	if (vkCreateDescriptorSetLayout(m_Device, &layoutInfo, nullptr, &m_DescriptorSetLayout) != VK_SUCCESS)
 	{
 		throw std::runtime_error("failed to create descriptor set layout!");
 	}
@@ -936,7 +990,7 @@ uint32_t VulkanRenderer::FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFla
 	VkPhysicalDeviceMemoryProperties memProperties;
 	vkGetPhysicalDeviceMemoryProperties(m_PhysicalDevice, &memProperties);
 
-	for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++) 
+	for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++)
 	{
 		if ((typeFilter & (1 << i)) && (memProperties.memoryTypes[i].propertyFlags & properties) == properties) {
 			return i;
@@ -959,7 +1013,17 @@ void VulkanRenderer::DrawFrame()
 	vkWaitForFences(m_Device, 1, &m_InFlightFences[m_CurrentFrame], VK_TRUE, UINT64_MAX);
 
 	uint32_t imageIndex;
-	vkAcquireNextImageKHR(m_Device, m_SwapChain, UINT64_MAX, m_ImageAvailableSemaphores[m_CurrentFrame], VK_NULL_HANDLE, &imageIndex);
+	VkResult result = vkAcquireNextImageKHR(m_Device, m_SwapChain, UINT64_MAX, m_ImageAvailableSemaphores[m_CurrentFrame], VK_NULL_HANDLE, &imageIndex);
+
+	if (result == VK_ERROR_OUT_OF_DATE_KHR) {
+		RecreateSwapChain();
+		return;
+	}
+	else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
+		throw std::runtime_error("failed to acquire swap chain image!");
+	}
+
+	UpdateUniformBuffer(imageIndex);
 
 	if (m_ImagesInFlight[imageIndex] != VK_NULL_HANDLE) {
 		vkWaitForFences(m_Device, 1, &m_ImagesInFlight[imageIndex], VK_TRUE, UINT64_MAX);
@@ -1015,7 +1079,7 @@ void VulkanRenderer::CleanUp()
 	vkDestroyBuffer(m_Device, m_VertexBuffer, nullptr);
 	vkFreeMemory(m_Device, m_VertexBufferMemory, nullptr);
 
-	for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) 
+	for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 	{
 		vkDestroySemaphore(m_Device, m_RenderFinishedSemaphores[i], nullptr);
 		vkDestroySemaphore(m_Device, m_ImageAvailableSemaphores[i], nullptr);
@@ -1023,7 +1087,7 @@ void VulkanRenderer::CleanUp()
 	}
 
 	vkDestroyCommandPool(m_Device, m_CommandPool, nullptr);
-	
+
 
 
 	vkDestroySurfaceKHR(m_Instance, m_Surface, nullptr);
@@ -1052,13 +1116,18 @@ void VulkanRenderer::CleanUpSwapChain()
 		vkDestroyImageView(m_Device, imageView, nullptr);
 	}
 
+	for (size_t i = 0; i < m_SwapChainImages.size(); i++)
+	{
+		vkDestroyBuffer(m_Device, m_UniformBuffers[i], nullptr);
+		vkFreeMemory(m_Device, m_UniformBuffersMemory[i], nullptr);
+	}
 }
 
 std::vector<char> VulkanRenderer::ReadFile(const std::string& filename)
 {
 	std::ifstream file(filename, std::ios::ate | std::ios::binary);
 
-	if (!file.is_open()) 
+	if (!file.is_open())
 		throw std::runtime_error("failed to open file!");
 
 	size_t fileSize = (size_t)file.tellg();
